@@ -5,9 +5,16 @@ const Header = () => {
   const user = useUser()
 
   return (
-    <header>
-      <nav>
-        <ul>
+    <div className="navbar mb-8 shadow-lg bg-neutral text-neutral-content">
+      <div className="flex-1">
+        <Link href="/">
+          <a className="btn btn-ghost normal-case text-xl">
+            <span role="img" aria-label="snake" className="mr-2">🐍</span>Machine
+          </a>
+        </Link>
+      </div>
+      <div className="flex-none">
+        <ul className="menu menu-horizontal p-0">
           <li>
             <Link href="/">
               <a>Home</a>
@@ -32,35 +39,8 @@ const Header = () => {
             </li>
           )}
         </ul>
-      </nav>
-      <style jsx>{`
-        nav {
-          max-width: 42rem;
-          margin: 0 auto;
-          padding: 0.2rem 1.25rem;
-        }
-        ul {
-          display: flex;
-          list-style: none;
-          margin-left: 0;
-          padding-left: 0;
-        }
-        li {
-          margin-right: 1rem;
-        }
-        li:first-child {
-          margin-left: auto;
-        }
-        a {
-          color: #fff;
-          text-decoration: none;
-        }
-        header {
-          color: #fff;
-          background-color: #333;
-        }
-      `}</style>
-    </header>
+      </div>
+    </div>
   )
 }
 

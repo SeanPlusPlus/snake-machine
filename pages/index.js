@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 
@@ -6,38 +7,17 @@ const Home = () => {
 
   return (
     <Layout>
-      <h1>Passport.js Example</h1>
-
-      <p>Steps to test the example:</p>
-
-      <ol>
-        <li>Click Login and enter a username and password.</li>
-        <li>
-          You'll be redirected to Home. Click on Profile, notice how your
-          session is being used through a token stored in a cookie.
-        </li>
-        <li>
-          Click Logout and try to go to Profile again. You'll get redirected to
-          Login.
-        </li>
-      </ol>
-
-      {user && (
-        <>
-          <p>Currently logged in as:</p>
-          <pre>{JSON.stringify(user, null, 2)}</pre>
-        </>
-      )}
-
-      <style jsx>{`
-        li {
-          margin-bottom: 0.5rem;
-        }
-        pre {
-          white-space: pre-wrap;
-          word-wrap: break-word;
-        }
-      `}</style>
+      <div className="card bg-base-100 shadow-xl">
+        <div className="card-body">
+          {user ? (
+            <pre className="text-left text-xs">{JSON.stringify(user, null, 2)}</pre>
+          ) : (
+            <Link href="/login">
+              <a className="btn btn-outline w-[300px]">Login</a>
+            </Link>
+          )}
+        </div>
+      </div>
     </Layout>
   )
 }
