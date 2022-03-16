@@ -7,7 +7,7 @@ import AppReducer from '../reducers/AppReducer';
 import { log } from '../utils/logger'
 
 const initialState = {
-  user: { authenticated: false }
+  user: { authenticated: null }
 }
 
 export const GlobalContext = createContext(initialState);

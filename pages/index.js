@@ -6,7 +6,7 @@ const Home = () => {
   const { user } = useContext(GlobalContext)
   const { fetching, username, authenticated } = user;
 
-  if (authenticated === false || authenticated === null) {
+  if (authenticated === null || authenticated === false) {
     return (
       <Layout></Layout>
     )

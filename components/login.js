@@ -6,7 +6,7 @@ const Login = () => {
   const { user } = useContext(GlobalContext)
   const { username, fetching, authenticated } = user
 
-  if (fetching || username || (authenticated === false)) { 
+  if (fetching || username || (authenticated === null)) { 
     return <></>
   }
   
