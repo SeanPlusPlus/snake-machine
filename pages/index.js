@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { useContext } from 'react'
 import { GlobalContext } from '../context/GlobalState'
 import Layout from '../components/layout'
@@ -7,7 +6,7 @@ const Home = () => {
   const { user } = useContext(GlobalContext)
   const { fetching, username, authenticated } = user;
 
-  if (authenticated === false) {
+  if (authenticated === false || authenticated === null) {
     return (
       <Layout></Layout>
     )
