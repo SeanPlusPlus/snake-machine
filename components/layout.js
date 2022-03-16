@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Header from './header'
+import Nav from './nav'
 
 const Layout = (props) => (
   <div className="min-h-screen grid-bg">
@@ -7,7 +7,7 @@ const Layout = (props) => (
       <title>Snake Machine</title>
     </Head>
 
-    <Header />
+    <Nav />
 
     <main className="flex text-center">
       <div className="m-auto">{props.children}</div>
