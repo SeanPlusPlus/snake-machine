@@ -7,7 +7,7 @@ const Header = () => {
       <title>Snake Machine</title>
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       <meta name="description" content="Snake Machine" />
-      <link rel="icon" href="https://i.imgur.com/n9ZavE9.png" />
+      <link rel="icon" href="https://i.imgur.com/Su6lHdP.png" />
     </Head>
   )
 }
