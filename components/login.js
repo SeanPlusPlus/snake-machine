@@ -4,9 +4,9 @@ import { GlobalContext } from '../context/GlobalState'
 
 const Login = () => {
   const { user } = useContext(GlobalContext)
-  const { username, fetching } = user
+  const { username, fetching, authenticated } = user
 
-  if (fetching || username) { 
+  if (fetching || username || authenticated) { 
     return <></>
   }
   
