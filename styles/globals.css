@@ -6,3 +6,22 @@
   background-image: radial-gradient(hsla(var(--bc) / 0.2) 0.5px, hsla(var(--b1) / 1) 0.5px);
   background-size: 5px 5px;
 }
+
+.rotate {
+  text-align: center;
+  margin: 0px auto;
+  font-size: 2rem;
+  animation-name: spin;
+  animation-duration: 5000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear; 
+}
+
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
