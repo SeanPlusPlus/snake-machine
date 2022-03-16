@@ -17,7 +17,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
           <label className="label">
             <span className="label-text">Password</span>
           </label>
-          <input name="password" type="text" className="input input-bordered w-full max-w-xs" />
+          <input name="password" type="text" className="input input-bordered w-full max-w-xs" autoComplete="off" />
         </div>
 
         {!isLogin && (
@@ -25,7 +25,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
             <label className="label">
               <span className="label-text">Password</span>
             </label>
-            <input name="rpassword" type="text" className="input input-bordered w-full max-w-xs" />
+            <input name="rpassword" type="text" className="input input-bordered w-full max-w-xs" autoComplete="off" />
           </div>
         )}
 
@@ -34,7 +34,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
             <>
               <div className="mb-5">
                 <Link href="/signup">
-                  <a className="link link-info">I don't have an account</a>
+                  <a className="link link-secondary">I don't have an account</a>
                 </Link>
               </div>
               <div className="card-actions justify-end">
@@ -45,7 +45,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
             <>
               <div className="mb-5">
                 <Link href="/login">
-                  <a className="link link-info">I already have an account</a>
+                  <a className="link link-secondary">I already have an account</a>
                 </Link>
               </div>
               <div className="card-actions justify-end">
