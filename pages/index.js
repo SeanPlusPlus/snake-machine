@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import { useUser } from '../lib/hooks'
+import { useContext } from 'react'
+import { GlobalContext } from '../context/GlobalState'
 import Layout from '../components/layout'
 
 const Home = () => {
-  const user = useUser()
+  const { user } = useContext(GlobalContext)
 
   return (
     <Layout>

@@ -1,5 +1,4 @@
-import { useState, useContext } from 'react'
-import { GlobalContext } from '../context/GlobalState'
+import { useState } from 'react'
 import Router from 'next/router'
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
@@ -8,8 +7,6 @@ import Form from '../components/form'
 const Login = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })
   
-  const { setUser } = useContext(GlobalContext)
-
   const [errorMsg, setErrorMsg] = useState('')
 
   async function handleSubmit(e) {
@@ -31,7 +28,6 @@ const Login = () => {
         body: JSON.stringify(body),
       })
       if (res.status === 200) {
-        setUser({ username })
         Router.push('/')
       } else {
         throw new Error(await res.text())
