@@ -24,7 +24,7 @@ const Login = () => {
     }
 
     try {
-      setUser({ logging_in: true })
+      setUser({ fetching: true })
       const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

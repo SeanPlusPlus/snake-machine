@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import { useUser } from '../lib/hooks'
+import Login from './login'
 
 const Nav = () => {
   const user = useUser()
   const username = user && user.username
-
+  
   return (
     <div className="navbar mb-8 shadow-lg bg-neutral text-neutral-content">
       <div className="flex-1">
@@ -15,7 +16,7 @@ const Nav = () => {
         </Link>
       </div>
       <div className="flex-none gap-2">
-        { username ? (
+        { username && (
           <div className="dropdown dropdown-end">
             <label tabIndex="0" className="btn btn-outline">
               {username}
@@ -28,11 +29,8 @@ const Nav = () => {
               </li>
             </ul>
           </div>
-        ) : (
-          <Link href="/login">
-            <a className="btn btn-default">Login</a>
-          </Link>
         )}
+        <Login />
       </div>
     </div>
   )
