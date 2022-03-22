@@ -86,7 +86,11 @@ export default async function draft(req, res) {
 
     res.status(200).json({
       username,
-      drafts: data.map((el) => ({name: el.data.name, items: el.data.items}))
+      drafts: data.map((el) => ({
+        id: el.ref.id,
+        name: el.data.name,
+        items: el.data.items,
+      }))
     })
 
   } catch (error) {
