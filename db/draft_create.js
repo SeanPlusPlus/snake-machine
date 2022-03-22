@@ -37,7 +37,7 @@ async function findUser({ username }) {
   return user
 }
 
-async function createDraft({ items, username }) {
+async function createDraft({ items, name, username }) {
   let user = null
 
   // check for username
@@ -55,7 +55,7 @@ async function createDraft({ items, username }) {
   const new_draft = await client.query(
     q.Create(
       q.Collection(collection),
-      { data: { items, userRef: user.ref } }
+      { data: { items, name, userRef: user.ref } }
     )
   )
 
@@ -67,7 +67,7 @@ async function createDraft({ items, username }) {
 const drafts = [
   {
     username: 'sean',
-    title: 'colors',
+    name: 'colors',
     items: [
       {
         title: 'red'
@@ -82,7 +82,7 @@ const drafts = [
   },
   {
     username: 'sean',
-    title: 'cities',
+    name: 'cities',
     items: [
       {
         title: 'LA'
