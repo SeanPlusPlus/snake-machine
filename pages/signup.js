@@ -3,6 +3,7 @@ import Router from 'next/router'
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import Form from '../components/form'
+import { validateEmail } from '../utils/email'
 
 const Signup = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })
@@ -16,7 +17,28 @@ const Signup = () => {
 
     const body = {
       username: e.currentTarget.username.value,
+      email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
+    }
+
+    if (!body.username) {
+      setErrorMsg(`Username required`)
+      return
+    }
+
+    if (!body.email) {
+      setErrorMsg(`Email required`)
+      return
+    }
+
+    if (!validateEmail(body.email)) {
+      setErrorMsg(`Valid email required`)
+      return
+    }
+
+    if (!body.password) {
+      setErrorMsg(`Password required`)
+      return
     }
 
     if (body.password !== e.currentTarget.rpassword.value) {
@@ -30,6 +52,14 @@ const Signup = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
+
+      const json = await res.json()
+      const { user: { valid, message } } = json
+      if (valid === false) {
+        setErrorMsg(message)
+        return
+      }
+
       if (res.status === 200) {
         Router.push('/login')
       } else {

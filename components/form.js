@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Error from './error'
 
 const Form = ({ isLogin, errorMessage, onSubmit }) => (
   <div className="card w-96 bg-base-100 shadow-xl">
@@ -12,6 +13,14 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
           <input name="username" type="text" className="input input-bordered w-full max-w-xs" />
         </div>
 
+        {!isLogin && (
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text">Email</span>
+            </label>
+            <input name="email" type="text" className="input input-bordered w-full max-w-xs" autoComplete="off" />
+          </div>
+        )}
 
         <div className="form-control w-full max-w-xs">
           <label className="label">
@@ -23,7 +32,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
         {!isLogin && (
           <div className="form-control w-full max-w-xs">
             <label className="label">
-              <span className="label-text">Password</span>
+              <span className="label-text">Re-enter Password</span>
             </label>
             <input name="rpassword" type="text" className="input input-bordered w-full max-w-xs" autoComplete="off" />
           </div>
@@ -54,7 +63,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
             </>
           )}
         </div>
-        {errorMessage && <p className="error">{errorMessage}</p>}
+        {errorMessage && <div className="mt-2"><Error message={errorMessage} /></div>}
       </div>
     </form>
   </div>
