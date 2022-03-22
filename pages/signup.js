@@ -16,7 +16,23 @@ const Signup = () => {
 
     const body = {
       username: e.currentTarget.username.value,
+      email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
+    }
+
+    if (!body.username) {
+      setErrorMsg(`Username required`)
+      return
+    }
+
+    if (!body.email) {
+      setErrorMsg(`Email required`)
+      return
+    }
+
+    if (!body.password) {
+      setErrorMsg(`Password required`)
+      return
     }
 
     if (body.password !== e.currentTarget.rpassword.value) {
@@ -32,9 +48,9 @@ const Signup = () => {
       })
 
       const json = await res.json()
-      const { user } = json
-      if (user === false) {
-        setErrorMsg('Username exists')
+      const { user: { valid, message } } = json
+      if (valid === false) {
+        setErrorMsg(message)
         return
       }
 
