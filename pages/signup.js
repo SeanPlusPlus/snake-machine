@@ -30,6 +30,14 @@ const Signup = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
+
+      const json = await res.json()
+      const { user } = json
+      if (user === false) {
+        setErrorMsg('Username exists')
+        return
+      }
+
       if (res.status === 200) {
         Router.push('/login')
       } else {
