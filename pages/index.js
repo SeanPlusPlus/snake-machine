@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useContext } from 'react'
 import { GlobalContext } from '../context/GlobalState'
 import Layout from '../components/layout'
+import Drafts from '../components/drafts'
 
 const Fetching = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 rotate" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -40,20 +41,20 @@ const Home = () => {
 
   return (
     <Layout>
-      <div className="card bg-base-100 shadow-xl">
-        <div className="card-body w-[360px] h-[120px]">
-          {username && (
-            <h3 className="text-2xl pt-2">
-              Hiya, <code>{user.username}</code>
-            </h3>
-          )}
-          {fetching && (
-            <div className="m-auto">
-              <Fetching />
-            </div>
-          )}
+      {username && (
+        <div className="md:grid md:grid-cols-2 lg:grid-cols-4">
+          <Drafts />
         </div>
-      </div>
+      )}
+      {fetching && (
+        <div className="card bg-base-100 shadow-xl">
+          <div className="card-body w-[360px] h-[120px]">
+              <div className="m-auto">
+                <Fetching />
+              </div>
+          </div>
+        </div>
+      )}
     </Layout>
   )
 }
