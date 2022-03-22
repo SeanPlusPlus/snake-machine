@@ -42,7 +42,9 @@ const Home = () => {
   return (
     <Layout>
       {username && (
-        <Drafts />
+        <div className="md:grid md:grid-cols-2 lg:grid-cols-4">
+          <Drafts />
+        </div>
       )}
       {fetching && (
         <div className="card bg-base-100 shadow-xl">
