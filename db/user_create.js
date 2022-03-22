@@ -13,6 +13,32 @@ const client = new faunadb.Client({
   scheme: 'https',
 })
 
+async function findEmail({ email }) {
+  const index = 'users_by_email'
+  const item = await client.query(
+    q.Select([0],
+      q.Paginate(
+        q.Match(
+          q.Index(index),
+          email
+        )
+      )
+    )
+  )
+  const ref = item[1].value.id
+  const collection = 'users'
+  const user = await client.query(
+    q.Get(
+      q.Ref(
+        q.Collection(collection),
+        ref
+      )
+    )
+  )
+
+  return user.data
+}
+
 async function findUser({ username }) {
   const index = 'users_by_username'
   const item = await client.query(
@@ -39,8 +65,10 @@ async function findUser({ username }) {
   return user.data
 }
 
-async function createUser({ username, password }) {
+async function createUser({ username, password, email }) {
   let exists = null
+
+  // check for username
   try {
     exists = await findUser({ username })
   } catch {
@@ -48,7 +76,18 @@ async function createUser({ username, password }) {
   }
 
   if (exists) {
-    return
+    return false
+  }
+
+  // check for email 
+  try {
+    exists = await findEmail({ email })
+  } catch {
+    exists = false
+  }
+
+  if (exists) {
+    return false
   }
 
   const salt = crypto.randomBytes(16).toString('hex')
@@ -60,6 +99,7 @@ async function createUser({ username, password }) {
     id: uuidv4(),
     createdAt: Date.now(),
     username,
+    email,
     hash,
     salt,
   }
@@ -80,8 +120,9 @@ async function createUser({ username, password }) {
 }
 
 const username = 'sean'
+const email = 'seanplusplus@gmail.com'
 const password = 'foo'
-createUser({ username, password }).then((res) => {
+createUser({ username, email, password }).then((res) => {
   console.log(res);
 })
 
