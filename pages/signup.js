@@ -3,6 +3,7 @@ import Router from 'next/router'
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import Form from '../components/form'
+import { validateEmail } from '../utils/email'
 
 const Signup = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })
@@ -27,6 +28,11 @@ const Signup = () => {
 
     if (!body.email) {
       setErrorMsg(`Email required`)
+      return
+    }
+
+    if (!validateEmail(body.email)) {
+      setErrorMsg(`Valid email required`)
       return
     }
 
