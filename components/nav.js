@@ -69,7 +69,7 @@ const Nav = () => {
             Email: <code className="font-semibold">{email}</code>
           </p>
           <div className="modal-action pt-5">
-            <label for="my-modal" className="btn" onClick={handleClose}>Close</label>
+            <label htmlFor="my-modal" className="btn" onClick={handleClose}>Close</label>
           </div>
         </div>
       </div>
