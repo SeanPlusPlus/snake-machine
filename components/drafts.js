@@ -26,19 +26,12 @@ const Drafts = () => {
   }
 
   return (
-    drafts.map((d, i) => (
-      <div key={i} className="card bg-base-100 shadow-xl m-2">
-        <div className="card-body">
-            <div className="m-auto text-left">
-              <span className="text-xl">{d.name}</span>
-              <div className="divider" />
-              <ul>
-                {d.items.map((item, idx) => <li key={idx}>{item.title}</li>)}
-              </ul>
-            </div>
-        </div>
-      </div>
-    ))
+    
+    <ul className="menu bg-base-100 w-56">
+      {drafts.map((d, i) => (
+        <li key={i}><a>{d.name}</a></li>
+      ))}
+    </ul>
   )
 }
 
