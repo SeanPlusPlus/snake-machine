@@ -15,8 +15,8 @@ const Drafts = () => {
 
   return (
     <div>
-      {drafts.map((d) => (
-        <div className="card bg-base-100 shadow-xl m-2">
+      {drafts.map((d, i) => (
+        <div key={i} className="card bg-base-100 shadow-xl m-2">
           <div className="card-body">
               <div className="m-auto">
                 {d.name}
