@@ -51,8 +51,6 @@ async function createDraft({ items, username }) {
     return false
   }
 
-  console.log(user);
- 
   const collection = 'drafts'
   const new_draft = await client.query(
     q.Create(
@@ -66,21 +64,44 @@ async function createDraft({ items, username }) {
   }
 }
 
-const draft = {
-  username: 'sean',
-  items: [
-    {
-      title: 'hello'
-    },
-    {
-      title: 'world'
-    }
-  ]
-}
+const drafts = [
+  {
+    username: 'sean',
+    title: 'colors',
+    items: [
+      {
+        title: 'red'
+      },
+      {
+        title: 'yellow'
+      },
+      {
+        title: 'green'
+      }
+    ]
+  },
+  {
+    username: 'sean',
+    title: 'cities',
+    items: [
+      {
+        title: 'LA'
+      },
+      {
+        title: 'NY'
+      },
+      {
+        title: 'SF'
+      }
+    ]
+  },
+]
 
-createDraft(draft).then((res) => {
-  console.log(res);
-}).catch((e) => {
-  console.log(e)
+drafts.forEach((draft) => {
+  createDraft(draft).then((res) => {
+    console.log(res);
+  }).catch((e) => {
+    console.log(e)
+  })
 })
 
