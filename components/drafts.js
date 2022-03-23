@@ -1,4 +1,5 @@
 import { useEffect, useContext } from 'react'
+import Link from 'next/link'
 import { GlobalContext } from '../context/GlobalState'
 import Fetching from './fetching'
 
@@ -31,7 +32,11 @@ const Drafts = () => {
       <ul className="list-disc text-left text-xl">
         {drafts.map((d, i) => (
           <li key={i} className="pt-4">
-            {d.name}
+            <Link href={`/draft/${d.id}`}>
+              <a className="link link-secondary">
+                {d.name}
+              </a>
+            </Link>
             <ul className="list-disc text-left ml-4 text-sm">
               {d.items.map((item, idx) => (
                 <li key={idx} className="pt-1">
