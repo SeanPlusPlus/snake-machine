@@ -9,6 +9,7 @@ import { log } from '../utils/logger'
 const initialState = {
   user: { authenticated: null },
   drafts: [],
+  leagues: [],
 }
 
 export const GlobalContext = createContext(initialState);
@@ -34,6 +35,13 @@ export const GlobalProvider = ({
     });
   }
 
+  function setLeagues(data) {
+    dispatch({
+      type: 'UPDATE_LEAGUES',
+      payload: data 
+    });
+  }
+
   useEffect(() => {
     log('state', 'rgb(217, 38, 169)', state);
   }, [state])
@@ -44,6 +52,8 @@ export const GlobalProvider = ({
         setUser,
         drafts: state.drafts,
         setDrafts,
+        leagues: state.leagues,
+        setLeagues,
       }
     } > {
       children
