@@ -94,13 +94,23 @@ export default async function draft(req, res) {
 
     if (id) {
       const draft = await getDraft(id)
+
       const { data: {items, name} } = draft
-
-      res.status(200).json({
-        username,
-        draft: { items, name } 
-      })
-
+      const user_ref = user.ref.id
+      const draft_user_ref = draft.data.userRef.value.id
+      
+      if (user_ref === draft_user_ref) {
+        res.status(200).json({
+          username,
+          draft: { items, name },
+        })
+        return
+      } else {
+        res.status(400).json({
+          message: 'Not your draft'
+        })
+        return
+      }
     } else {
       const drafts = await getDrafts(user)
       const { data } = drafts
@@ -113,6 +123,7 @@ export default async function draft(req, res) {
           items: el.data.items,
         }))
       })
+      return
     }
   } catch (error) {
     console.error(error)
