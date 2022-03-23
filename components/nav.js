@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { useUser } from '../lib/hooks'
 import Login from './login'
 
@@ -8,6 +9,10 @@ const Nav = () => {
   const user = useUser()
   const username = user && user.username
   const email = user && user.email
+
+  const router = useRouter()
+  const { query } = router
+  const redirect = query && query.path
 
   const handleOpen = () => {
     setModal('modal-open')
@@ -48,7 +53,9 @@ const Nav = () => {
               </ul>
             </div>
           )}
-          <Login />
+          {!redirect && (
+            <Login />
+          )}
         </div>
       </div>
 
