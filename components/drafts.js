@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { GlobalContext } from '../context/GlobalState'
 import Fetching from './fetching'
 
@@ -11,9 +11,12 @@ const Drafts = () => {
     return json
   }
 
-  getDrafts().then((data) => {
-    setDrafts(data.drafts)
-  })
+  useEffect(() => {
+    getDrafts().then((data) => {
+      setDrafts(data.drafts)
+    })
+  }, []);
+
 
   if (drafts.length === 0) {
     return (
