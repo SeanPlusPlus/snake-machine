@@ -7,7 +7,8 @@ import AppReducer from '../reducers/AppReducer';
 import { log } from '../utils/logger'
 
 const initialState = {
-  user: { authenticated: null }
+  user: { authenticated: null },
+  drafts: [],
 }
 
 export const GlobalContext = createContext(initialState);
@@ -18,9 +19,17 @@ export const GlobalProvider = ({
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
   // Actions for changing state
+
   function setUser(data) {
     dispatch({
       type: 'UPDATE_USER',
+      payload: data 
+    });
+  }
+
+  function setDrafts(data) {
+    dispatch({
+      type: 'UPDATE_DRAFTS',
       payload: data 
     });
   }
@@ -33,6 +42,8 @@ export const GlobalProvider = ({
       {
         user: state.user,
         setUser,
+        drafts: state.drafts,
+        setDrafts,
       }
     } > {
       children

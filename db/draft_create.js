@@ -70,13 +70,13 @@ const drafts = [
     name: 'colors',
     items: [
       {
-        title: 'red'
+        name: 'red'
       },
       {
-        title: 'yellow'
+        name: 'yellow'
       },
       {
-        title: 'green'
+        name: 'green'
       }
     ]
   },
@@ -85,13 +85,13 @@ const drafts = [
     name: 'cities',
     items: [
       {
-        title: 'LA'
+        name: 'LA'
       },
       {
-        title: 'NY'
+        name: 'NY'
       },
       {
-        title: 'SF'
+        name: 'SF'
       }
     ]
   },
