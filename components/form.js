@@ -10,7 +10,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
           <label className="label">
             <span className="label-text">Username</span>
           </label>
-          <input name="username" type="text" className="input input-bordered w-full max-w-xs" />
+          <input name="username" type="text" className="input input-bordered w-full max-w-xs" autoCorrect="off" autoCapitalize="none" />
         </div>
 
         {!isLogin && (
@@ -18,7 +18,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
             <label className="label">
               <span className="label-text">Email</span>
             </label>
-            <input name="email" type="text" className="input input-bordered w-full max-w-xs" autoComplete="off" />
+            <input name="email" type="text" className="input input-bordered w-full max-w-xs" autoComplete="off" autoCorrect="off" autoCapitalize="none" />
           </div>
         )}
 
@@ -26,7 +26,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
           <label className="label">
             <span className="label-text">Password</span>
           </label>
-          <input name="password" type="text" className="input input-bordered w-full max-w-xs" autoComplete="off" />
+          <input name="password" type="text" className="input input-bordered w-full max-w-xs" autoComplete="off" autoCorrect="off" autoCapitalize="none" />
         </div>
 
         {!isLogin && (
@@ -34,7 +34,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
             <label className="label">
               <span className="label-text">Re-enter Password</span>
             </label>
-            <input name="rpassword" type="text" className="input input-bordered w-full max-w-xs" autoComplete="off" />
+            <input name="rpassword" type="text" className="input input-bordered w-full max-w-xs" autoComplete="off" autoCorrect="off" autoCapitalize="none" />
           </div>
         )}
 
