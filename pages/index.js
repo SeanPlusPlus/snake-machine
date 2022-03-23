@@ -44,10 +44,8 @@ const Home = () => {
       {username && (
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body w-[360px]">
-              <div className="m-auto">
-                <Drafts />
-              </div>
-            </div>
+            <Drafts />
+          </div>
         </div>
       )}
       {fetching && (
