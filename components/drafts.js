@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { GlobalContext } from '../context/GlobalState'
 import Fetching from './fetching'
 
 const Drafts = () => {
-  const [ drafts, setDrafts ] = useState([])
+  const { drafts, setDrafts } = useContext(GlobalContext)
 
   async function getDrafts() {
     const res = await fetch('/api/draft')

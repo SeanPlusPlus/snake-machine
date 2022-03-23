@@ -9,6 +9,11 @@ export default (state, action) => {
         ...state,
         user: action.payload,
       }
+    case 'UPDATE_DRAFTS':
+      return {
+        ...state,
+        drafts: action.payload,
+      }
     default:
       return state;
   }

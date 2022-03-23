@@ -82,8 +82,6 @@ export default async function draft(req, res) {
     const drafts = await getDrafts(user)
     const { data } = drafts
 
-    console.log(data);
-
     res.status(200).json({
       username,
       drafts: data.map((el) => ({
