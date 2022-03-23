@@ -30,10 +30,15 @@ const Drafts = () => {
       <div className="divider mb-0" />
       <ul className="list-disc text-left text-xl">
         {drafts.map((d, i) => (
-          <li key={i} className="pt-3">
-            <a href="/" className="link link-secondary">
-              {d.name}
-            </a>
+          <li key={i} className="pt-4">
+            {d.name}
+            <ul className="list-disc text-left ml-4 text-sm">
+              {d.items.map((item, idx) => (
+                <li key={idx} className="pt-1">
+                  {item.name}
+                </li>
+              ))}
+            </ul>
           </li>
         ))}
       </ul>
