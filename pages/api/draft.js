@@ -50,6 +50,15 @@ async function getUserRef({ username }) {
   return user
 }
 
+async function getDraft(id) {
+  const collection = 'drafts'
+  const draft = await client.query(
+    Get(Ref(Collection(collection), id))
+  )
+
+  return draft
+}
+
 async function getDrafts(user) {
   const index = 'drafts_by_user'
   const collection = 'users'
@@ -79,18 +88,32 @@ export default async function draft(req, res) {
       return
     }
 
-    const drafts = await getDrafts(user)
-    const { data } = drafts
+    const {
+      query: { id },
+    } = req
 
-    res.status(200).json({
-      username,
-      drafts: data.map((el) => ({
-        id: el.ref.id,
-        name: el.data.name,
-        items: el.data.items,
-      }))
-    })
+    if (id) {
+      const draft = await getDraft(id)
+      const { data: {items, name} } = draft
 
+      res.status(200).json({
+        username,
+        draft: { items, name } 
+      })
+
+    } else {
+      const drafts = await getDrafts(user)
+      const { data } = drafts
+
+      res.status(200).json({
+        username,
+        drafts: data.map((el) => ({
+          id: el.ref.id,
+          name: el.data.name,
+          items: el.data.items,
+        }))
+      })
+    }
   } catch (error) {
     console.error(error)
     res.status(500).end('Authentication token is invalid, please log in')
