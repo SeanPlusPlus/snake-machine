@@ -23,6 +23,16 @@ const Login = () => {
       password,
     }
 
+    if (!username) {
+      setErrorMsg('Username required')
+      return
+    }
+
+    if (!password) {
+      setErrorMsg('Password required')
+      return
+    }
+
     try {
       setUser({ fetching: true })
       const res = await fetch('/api/login', {
