@@ -5,12 +5,14 @@ import { useUser } from '../../lib/hooks'
 import { GlobalContext } from '../../context/GlobalState'
 import Header from '../../components/header'
 import Layout from '../../components/layout'
+import Warning from '../../components/warning'
 
 const Draft = () => {
   const { user: {authenticated} } = useContext(GlobalContext)
   const user = useUser()
   const username = user && user.username
 
+  const [warning, setWarning] = useState(null)
   const [draft, setDraft] = useState(null)
   
   const router = useRouter()
@@ -20,16 +22,31 @@ const Draft = () => {
   async function getDraft() {
     const res = await fetch(`/api/drafts?id=${id}`)
     const json = await res.json()
-    return json
+    if (res.status === 403) {
+      throw new Error(json.message)
+    } else {
+      return json
+    }
   }
 
   useEffect(() => {
     if (username) {
       getDraft().then((data) => {
         setDraft(data.draft)
-      }).catch((e) => console.log(e))
+      }).catch((e) => {
+        console.log(e.message);
+        setWarning(e.message)
+      })
     }
   }, [username]);
+
+  if (warning) {
+    return (
+      <Layout>
+        <Warning message={warning} />
+      </Layout>
+    )
+  }
 
   if (authenticated === null) {
     <div className="min-h-screen grid-bg">

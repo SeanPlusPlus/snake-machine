@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import Error from './error'
+import Warning from './warning'
 
 const Form = ({ isLogin, errorMessage, onSubmit }) => (
   <div className="card w-96 bg-base-100 shadow-xl">
@@ -63,7 +63,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
             </>
           )}
         </div>
-        {errorMessage && <div className="mt-2"><Error message={errorMessage} /></div>}
+        {errorMessage && <div className="mt-2"><Warning message={errorMessage} /></div>}
       </div>
     </form>
   </div>

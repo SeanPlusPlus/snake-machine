@@ -18,7 +18,6 @@ const Drafts = () => {
     })
   }, []);
 
-
   if (drafts === null) {
     return (
       <Fetching />

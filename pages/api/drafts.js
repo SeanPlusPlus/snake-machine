@@ -119,7 +119,7 @@ export default async function draft(req, res) {
       })
       return
     } else {
-      res.status(400).json({
+      res.status(403).json({
         message: 'Not your draft'
       })
       return
