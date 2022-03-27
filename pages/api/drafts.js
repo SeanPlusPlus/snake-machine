@@ -52,11 +52,15 @@ async function getUserRef({ username }) {
 
 async function getDraft(id) {
   const collection = 'drafts'
-  const draft = await client.query(
-    Get(Ref(Collection(collection), id))
-  )
+  try {
+    const draft = await client.query(
+      Get(Ref(Collection(collection), id))
+    )
 
-  return draft
+    return draft
+  } catch {
+    throw new Error()
+  }
 }
 
 async function getDrafts(user) {
@@ -106,7 +110,14 @@ export default async function draft(req, res) {
   } = req
 
   if (id) {
-    const draft = await getDraft(id)
+    let draft
+    try {
+      draft = await getDraft(id)
+    } catch {
+      res.status(404).json(({
+        message: 'Draft not found'
+      }))
+    }
 
     const { data: {items, name} } = draft
     const user_ref = user.ref.id

@@ -22,7 +22,7 @@ const Draft = () => {
   async function getDraft() {
     const res = await fetch(`/api/drafts?id=${id}`)
     const json = await res.json()
-    if (res.status === 403) {
+    if (res.status !== 200) {
       throw new Error(json.message)
     } else {
       return json
