@@ -159,9 +159,6 @@ export default async function draft(req, res) {
   } else {
     const drafts = await getDrafts(user)
     const { data } = drafts
-
-
-    console.log('data', data);
     
     const leagueLookups = data.map((d) => (getLeague(d.data.leagueRef.id)))
     const leagues = []
@@ -169,9 +166,6 @@ export default async function draft(req, res) {
       const result = await lookup
       leagues.push(result)
     }
-
-    console.log('leagues', leagues);
-
 
     res.status(200).json({
       username,
