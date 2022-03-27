@@ -7,7 +7,7 @@ const Drafts = () => {
   const { drafts, setDrafts } = useContext(GlobalContext)
 
   async function getDrafts() {
-    const res = await fetch('/api/draft')
+    const res = await fetch('/api/drafts')
     const json = await res.json()
     return json
   }
