@@ -7,7 +7,7 @@ const Leagues = () => {
   const { leagues, setLeagues } = useContext(GlobalContext)
 
   async function getLeagues() {
-    const res = await fetch('/api/league')
+    const res = await fetch('/api/leagues')
     const json = await res.json()
     return json
   }

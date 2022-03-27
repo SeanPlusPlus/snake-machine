@@ -3,7 +3,6 @@ import { useContext } from 'react'
 import { GlobalContext } from '../context/GlobalState'
 import Layout from '../components/layout'
 import Drafts from '../components/drafts'
-import Leagues from '../components/leagues'
 
 const Fetching = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 rotate" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -44,11 +43,6 @@ const Home = () => {
     <Layout>
       {username && (
         <>
-          <div className="card bg-base-100 shadow-xl">
-            <div className="card-body w-[360px]">
-              <Leagues />
-            </div>
-          </div>
           <div className="card bg-base-100 shadow-xl mt-5">
             <div className="card-body w-[360px]">
               <Drafts />
