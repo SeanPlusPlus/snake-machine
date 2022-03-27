@@ -94,7 +94,8 @@ export default async function league(req, res) {
     leagues: data.map((el) => ({
       id: el.ref.id,
       name: el.data.name,
-      members: el.data.members,
+      draft_order: el.data.draft_order.map((user) => ({ userRef: user.value.id })),
+      items: el.data.items,
     }))
   })
   return
