@@ -1,4 +1,5 @@
 const faunadb = require('faunadb')
+const _find = require('lodash/find')
 
 require('dotenv').config()
 
@@ -19,6 +20,7 @@ const {
   Paginate,
   Match,
   Index,
+  Create,
 } = q
 
 async function findUser({ username }) {
@@ -47,23 +49,62 @@ async function findUser({ username }) {
   return user
 }
 
-async function createLeague({ usernames }) {
-  const userLookups = usernames.map((username) => (findUser({username})))
+async function createLeague({ name, usernames, items }) {
+  const userLookups = usernames.map((user) => (findUser({ username: user.name })))
   const users = []
-  for (const user of userLookups) {
-    const result = await user
+  for (const lookup of userLookups) {
+    const result = await lookup 
     users.push(result)
   }
+
+  const userRefs = users.map((user) => ({
+    name: user.data.username,
+    userRef: user.ref,
+  }))
+
+  const draft_order = usernames.map((u) => (
+    _find(userRefs, {name: u.name}).userRef
+  ))
+
+  const league = {
+    name,
+    draft_order,
+    items: items.map((name) => ({ name }))
+  }
+
+  const collection = 'leagues'
+  const new_league = await client.query(
+    Create(
+      Collection(collection),
+      { data: league }
+    )
+  )
+
   return {
-    users
+    league: new_league
   }
 }
 
+const name = 'The Masters 2022'
 const usernames = [
-  'sean',
-  'test',
-] 
+  {
+    name: 'sean',
+  },
+  {
+    name: 'test',
+  },
+]
+const items = [
+  'Fred Couples',
+  'Sergio Garcia',
+  'Hideki Matsuyama',
+  'Bubba Watson',
+  'Tiger Woods',
+  'Jordan Spieth',
+  'Bryson DeChambeau',
+  'Brooks Koepka',
+]
 
-createLeague({usernames}).then((data) => {
+createLeague({name, usernames, items}).then((data) => {
   console.log(data);
 })
