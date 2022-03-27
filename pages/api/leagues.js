@@ -79,9 +79,10 @@ export default async function league(req, res) {
     return
   }
 
-  if (user.role !== 'admin') {
+  const { data: {role} } = user
+  if (role !== 'admin') {
     res.status(403).json({
-      message: 'Not allowed'
+      message: 'Not allowed',
     })
   }
 
@@ -89,7 +90,6 @@ export default async function league(req, res) {
   const { data } = leagues 
 
   res.status(200).json({
-    user,
     username,
     leagues: data.map((el) => ({
       id: el.ref.id,
