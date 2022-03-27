@@ -8,12 +8,17 @@ import Layout from '../../components/layout'
 import Warning from '../../components/warning'
 
 const Draft = () => {
-  const { user: {authenticated} } = useContext(GlobalContext)
+  const {
+    user: {
+      authenticated
+    },
+    draft,
+    setDraft,
+  } = useContext(GlobalContext)
   const user = useUser()
   const username = user && user.username
 
   const [warning, setWarning] = useState(null)
-  const [draft, setDraft] = useState(null)
   
   const router = useRouter()
   const { id } = router.query
@@ -32,7 +37,7 @@ const Draft = () => {
   useEffect(() => {
     if (username) {
       getDraft().then((data) => {
-        setDraft(data.draft)
+        setDraft(data)
       }).catch((e) => {
         console.log(e.message);
         setWarning(e.message)
@@ -86,13 +91,14 @@ const Draft = () => {
       <Layout>
         {draft && (
           <>
-            <h1 className="text-4xl text-left bottom-2 border-b-2 border-indigo-500">{draft.name}</h1>
+            <h1 className="text-4xl text-left bottom-2 border-b-2 border-indigo-500">{draft.league.name}</h1>
+
             <div className="card bg-base-100 shadow-xl mt-4">
               <div className="card-body w-[360px]">
-                <h4 className="text-2xl text-left">My Draft</h4>
+                <h4 className="text-2xl text-left">Items</h4>
                 <div className="divider mb-0 mt-1" />
                 <ul className="list-disc text-left text-md">
-                  {draft.items.map((item, idx) => (
+                  {draft.league.items.map((item, idx) => (
                     <li key={idx} className="pt-1">
                       {item.name}
                     </li>
@@ -100,6 +106,21 @@ const Draft = () => {
                 </ul>
               </div>
             </div>
+
+            <div className="card bg-base-100 shadow-xl mt-4">
+              <div className="card-body w-[360px]">
+                <h4 className="text-2xl text-left">My Draft</h4>
+                <div className="divider mb-0 mt-1" />
+                <ul className="list-disc text-left text-md">
+                  {draft.draft.items.map((item, idx) => (
+                    <li key={idx} className="pt-1">
+                      {item.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
           </>
         )}
       </Layout>

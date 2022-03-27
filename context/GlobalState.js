@@ -9,6 +9,7 @@ import { log } from '../utils/logger'
 const initialState = {
   user: { authenticated: null },
   drafts: null,
+  draft: null,
   leagues: null,
 }
 
@@ -35,6 +36,13 @@ export const GlobalProvider = ({
     });
   }
 
+  function setDraft(data) {
+    dispatch({
+      type: 'UPDATE_DRAFT',
+      payload: data 
+    });
+  }
+
   function setLeagues(data) {
     dispatch({
       type: 'UPDATE_LEAGUES',
@@ -52,6 +60,8 @@ export const GlobalProvider = ({
         setUser,
         drafts: state.drafts,
         setDrafts,
+        draft: state.draft,
+        setDraft,
         leagues: state.leagues,
         setLeagues,
       }

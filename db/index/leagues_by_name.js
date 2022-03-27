@@ -18,22 +18,14 @@ const client = new faunadb.Client({
 })
 
 async function idx() {
-  const index = 'leagues_by_name'
+  const index = 'leagues'
   const collection = 'leagues'
   const new_index = await client.query(
     CreateIndex({
       name: index,
       source: [ Collection(collection) ],
       terms: [
-        { field: ['data', 'name'] },
-      ],
-      values: [
-        {
-          field: ['data', 'name']
-        },
-        {
-          field: ['ref']
-        }
+        { field: ['data', 'leagueRef'] },
       ]
     })
   )

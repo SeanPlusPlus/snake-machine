@@ -34,7 +34,7 @@ const Drafts = () => {
           <li key={i} className="pt-1 pb-1">
             <Link href={`/drafts/${d.id}`}>
               <a className="link link-secondary">
-                {d.name}
+                {d.league.name}
               </a>
             </Link>
             <ul className="list-disc text-left ml-4 text-sm">

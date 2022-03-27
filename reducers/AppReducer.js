@@ -19,6 +19,11 @@ export default (state, action) => {
         ...state,
         leagues: action.payload,
       }
+    case 'UPDATE_DRAFT':
+      return {
+        ...state,
+        draft: action.payload,
+      }
     default:
       return state;
   }

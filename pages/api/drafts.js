@@ -50,6 +50,7 @@ async function getUserRef({ username }) {
   return user
 }
 
+
 async function getDraft(id) {
   const collection = 'drafts'
   try {
@@ -61,32 +62,6 @@ async function getDraft(id) {
   } catch {
     throw new Error()
   }
-}
-
-async function findLeague(name) {
-  const index = 'leagues_by_name'
-  const item = await client.query(
-    Select([0],
-      Paginate(
-        Match(
-          Index(index),
-          name
-        )
-      )
-    )
-  )
-  const ref = item[1].value.id
-  const collection = 'leagues'
-  const league = await client.query(
-    Get(
-      Ref(
-        Collection(collection),
-        ref
-      )
-    )
-  )
-
-  return league
 }
 
 async function getDrafts(user) {
@@ -105,6 +80,21 @@ async function getDrafts(user) {
   )
 
   return drafts
+}
+
+async function getLeague(id) {
+  const collection = 'leagues'
+  try {
+    const league = await client.query(
+      Get(Ref(Collection(collection), id))
+    )
+
+    const { data: { name, items, draft_order }} = league
+
+    return { name, items, draft_order }
+  } catch {
+    throw new Error()
+  }
 }
 
 export default async function draft(req, res) {
@@ -148,11 +138,15 @@ export default async function draft(req, res) {
     const { data: {items, name} } = draft
     const user_ref = user.ref.id
     const draft_user_ref = draft.data.userRef.value.id
+
+    const league_id = draft.data.leagueRef.id
+    const league = await getLeague(league_id)
     
     if (user_ref === draft_user_ref) {
       res.status(200).json({
         username,
-        draft: { items, name },
+        draft: { items, name},
+        league,
       })
       return
     } else {
@@ -165,12 +159,14 @@ export default async function draft(req, res) {
     const drafts = await getDrafts(user)
     const { data } = drafts
 
+    const league = {}
+
     res.status(200).json({
       username,
       drafts: data.map((el) => ({
         id: el.ref.id,
-        name: el.data.name,
         items: el.data.items,
+        league,
       }))
     })
     return
