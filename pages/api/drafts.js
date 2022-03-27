@@ -78,55 +78,64 @@ async function getDrafts(user) {
 }
 
 export default async function draft(req, res) {
-  try {
-    const session = await getLoginSession(req)
-    const { username } = session
-    const user = (session && (await getUserRef({ username }))) ?? null
+  const session = await getLoginSession(req)
+  if (!session) {
+    res.status(400).json({
+      message: 'Not logged in',
+    })
+    return
+  }
+ 
+  const { username } = session
+  if (!username) {
+    res.status(400).json({
+      message: 'Username not found in session, something is funky',
+    })
+    return
+  }
 
-    if (user === null) {
-      res.status(200).json({ user })
-      return
-    }
+  const user = (session && (await getUserRef({ username }))) ?? null
 
-    const {
-      query: { id },
-    } = req
+  if (user === null) {
+    res.status(200).json({ user })
+    return
+  }
 
-    if (id) {
-      const draft = await getDraft(id)
+  const {
+    query: { id },
+  } = req
 
-      const { data: {items, name} } = draft
-      const user_ref = user.ref.id
-      const draft_user_ref = draft.data.userRef.value.id
-      
-      if (user_ref === draft_user_ref) {
-        res.status(200).json({
-          username,
-          draft: { items, name },
-        })
-        return
-      } else {
-        res.status(400).json({
-          message: 'Not your draft'
-        })
-        return
-      }
-    } else {
-      const drafts = await getDrafts(user)
-      const { data } = drafts
+  if (id) {
+    const draft = await getDraft(id)
 
+    const { data: {items, name} } = draft
+    const user_ref = user.ref.id
+    const draft_user_ref = draft.data.userRef.value.id
+    
+    if (user_ref === draft_user_ref) {
       res.status(200).json({
         username,
-        drafts: data.map((el) => ({
-          id: el.ref.id,
-          name: el.data.name,
-          items: el.data.items,
-        }))
+        draft: { items, name },
+      })
+      return
+    } else {
+      res.status(400).json({
+        message: 'Not your draft'
       })
       return
     }
-  } catch (error) {
-    console.error(error)
-    res.status(500).end('Authentication token is invalid, please log in')
+  } else {
+    const drafts = await getDrafts(user)
+    const { data } = drafts
+
+    res.status(200).json({
+      username,
+      drafts: data.map((el) => ({
+        id: el.ref.id,
+        name: el.data.name,
+        items: el.data.items,
+      }))
+    })
+    return
   }
 }

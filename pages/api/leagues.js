@@ -56,30 +56,46 @@ async function getLeagues() {
 }
 
 export default async function league(req, res) {
-  try {
-    const session = await getLoginSession(req)
-    const { username } = session
-    const user = (session && (await getUserRef({ username }))) ?? null
-
-    if (user === null) {
-      res.status(200).json({ user })
-      return
-    }
-
-    const leagues = await getLeagues()
-    const { data } = leagues 
-
-    res.status(200).json({
-      username,
-      leagues: data.map((el) => ({
-        id: el.ref.id,
-        name: el.data.name,
-        members: el.data.members,
-      }))
+  const session = await getLoginSession(req)
+  if (!session) {
+    res.status(401).json({
+      message: 'Not logged in',
     })
     return
-  } catch (error) {
-    console.error(error)
-    res.status(500).end('Authentication token is invalid, please log in')
   }
+
+  const { username } = session
+  if (!username) {
+    res.status(400).json({
+      message: 'Username not found in session, something is funky',
+    })
+    return
+  }
+
+  const user = (session && (await getUserRef({ username }))) ?? null
+
+  if (user === null) {
+    res.status(200).json({ user })
+    return
+  }
+
+  if (user.role !== 'admin') {
+    res.status(403).json({
+      message: 'Not allowed'
+    })
+  }
+
+  const leagues = await getLeagues()
+  const { data } = leagues 
+
+  res.status(200).json({
+    user,
+    username,
+    leagues: data.map((el) => ({
+      id: el.ref.id,
+      name: el.data.name,
+      members: el.data.members,
+    }))
+  })
+  return
 }
