@@ -101,6 +101,7 @@ async function createDraft({ name, username }) {
           name,
           userRef: user.ref,
           leagueRef: league.ref,
+          items: [],
         }
       }
     )

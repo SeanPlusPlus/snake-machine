@@ -63,6 +63,32 @@ async function getDraft(id) {
   }
 }
 
+async function findLeague(name) {
+  const index = 'leagues_by_name'
+  const item = await client.query(
+    Select([0],
+      Paginate(
+        Match(
+          Index(index),
+          name
+        )
+      )
+    )
+  )
+  const ref = item[1].value.id
+  const collection = 'leagues'
+  const league = await client.query(
+    Get(
+      Ref(
+        Collection(collection),
+        ref
+      )
+    )
+  )
+
+  return league
+}
+
 async function getDrafts(user) {
   const index = 'drafts_by_user'
   const collection = 'users'
