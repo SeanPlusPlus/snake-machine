@@ -80,7 +80,7 @@ async function getDrafts(user) {
 export default async function draft(req, res) {
   const session = await getLoginSession(req)
   if (!session) {
-    res.status(400).json({
+    res.status(401).json({
       message: 'Not logged in',
     })
     return
