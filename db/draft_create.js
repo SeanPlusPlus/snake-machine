@@ -98,7 +98,6 @@ async function createDraft({ name, username }) {
       Collection(collection),
       {
         data: {
-          name,
           userRef: user.ref,
           leagueRef: league.ref,
           items: [],
