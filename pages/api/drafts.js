@@ -1,5 +1,6 @@
 import { getLoginSession } from '../../lib/auth'
 import faunadb from 'faunadb'
+import _find from 'lodash/find'
 
 require('dotenv').config()
 
@@ -89,9 +90,9 @@ async function getLeague(id) {
       Get(Ref(Collection(collection), id))
     )
 
-    const { data: { name, items, draft_order }} = league
+    const { ref, data: { name, items, draft_order }} = league
 
-    return { name, items, draft_order }
+    return { id:ref.id , name, items, draft_order }
   } catch {
     throw new Error()
   }
@@ -159,15 +160,32 @@ export default async function draft(req, res) {
     const drafts = await getDrafts(user)
     const { data } = drafts
 
+
+    console.log('data', data);
+    
+    const leagueLookups = data.map((d) => (getLeague(d.data.leagueRef.id)))
+    const leagues = []
+    for (const lookup of leagueLookups) {
+      const result = await lookup
+      leagues.push(result)
+    }
+
+    console.log('leagues', leagues);
+
+
     res.status(200).json({
       username,
-      drafts: data.map((el) => ({
-        id: el.ref.id,
-        items: el.data.items,
-        league: {
-          ref: el.data.leagueRef.id
+      drafts: data.map((el) => {
+      
+        const league = _find(leagues, (l) => l.id === el.data.leagueRef.id)
+        return {
+          id: el.ref.id,
+          items: el.data.items,
+          league: {
+            name: league.name,
+          }
         }
-      }))
+      })
     })
     return
   }
