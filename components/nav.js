@@ -11,7 +11,7 @@ const Nav = () => {
   const email = user && user.email
 
   const router = useRouter()
-  const { query } = router
+  const { query, pathname } = router
   const redirect = query && query.path
 
   const handleOpen = () => {
@@ -34,6 +34,9 @@ const Nav = () => {
           </Link>
         </div>
         <div className="flex-none gap-2">
+          <Link href="/">
+            <a className={`mr-2 link ${pathname !== '/' && 'link-hover'}`}>Home</a>
+          </Link>
           { username && (
             <div className="dropdown dropdown-end">
               <label tabIndex="0" className="btn btn-outline text-stone-50">
