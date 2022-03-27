@@ -34,27 +34,29 @@ const Nav = () => {
           </Link>
         </div>
         <div className="flex-none gap-2">
-          <Link href="/">
-            <a className={`mr-2 link ${pathname !== '/' && 'link-hover'}`}>Home</a>
-          </Link>
           { username && (
-            <div className="dropdown dropdown-end">
-              <label tabIndex="0" className="btn btn-outline text-stone-50">
-                {username}
-              </label>
-              <ul tabIndex="0" className="p-2 shadow menu menu-compact dropdown-content bg-neutral rounded-box w-52">
-                <li>
-                  <button onClick={handleOpen} className="justify-between">
-                    Profile
-                  </button>
-                </li>
-                <li>
-                  <a href="/api/logout" className="justify-between">
-                    Logout
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <>
+              <Link href="/">
+                <a className={`mr-2 link ${pathname !== '/' && 'link-hover'}`}>Home</a>
+              </Link>
+              <div className="dropdown dropdown-end">
+                <label tabIndex="0" className="btn btn-outline text-stone-50">
+                  {username}
+                </label>
+                <ul tabIndex="0" className="p-2 shadow menu menu-compact dropdown-content bg-neutral rounded-box w-52">
+                  <li>
+                    <button onClick={handleOpen} className="justify-between">
+                      Profile
+                    </button>
+                  </li>
+                  <li>
+                    <a href="/api/logout" className="justify-between">
+                      Logout
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </>
           )}
           {!redirect && (
             <Login />

@@ -27,9 +27,14 @@ const Drafts = () => {
 
   return (
     <>
-      <h3 className="text-4xl text-left">My Drafts</h3>
-      <div className="divider mb-0" />
-      {drafts.length === 0 && (<p>No drafts yet</p>)}
+      {drafts.length === 0 ? (
+        <p className="mt-3 text-2xl">No drafts yet</p>
+      ) : (
+        <>
+          <h3 className="text-4xl text-left">My Drafts</h3>
+          <div className="divider mb-0" />
+        </>
+      )}
       <ul className="list-disc text-left text-xl">
         {drafts.map((d, i) => (
           <li key={i} className="pt-4">
