@@ -8,8 +8,8 @@ import { log } from '../utils/logger'
 
 const initialState = {
   user: { authenticated: null },
-  drafts: [],
-  leagues: [],
+  drafts: null,
+  leagues: null,
 }
 
 export const GlobalContext = createContext(initialState);

@@ -18,7 +18,7 @@ const Draft = () => {
   const path = router.asPath
 
   async function getDraft() {
-    const res = await fetch(`/api/draft?id=${id}`)
+    const res = await fetch(`/api/drafts?id=${id}`)
     const json = await res.json()
     return json
   }
