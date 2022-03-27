@@ -159,14 +159,14 @@ export default async function draft(req, res) {
     const drafts = await getDrafts(user)
     const { data } = drafts
 
-    const league = {}
-
     res.status(200).json({
       username,
       drafts: data.map((el) => ({
         id: el.ref.id,
         items: el.data.items,
-        league,
+        league: {
+          ref: el.data.leagueRef.id
+        }
       }))
     })
     return
