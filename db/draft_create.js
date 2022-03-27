@@ -4,6 +4,18 @@ require('dotenv').config()
 
 const FAUNA_SECRET = process.env.FAUNA_SECRET
 const q = faunadb.query
+
+const {
+  Collection,
+  Ref,
+  Get,
+  Select,
+  Paginate,
+  Match,
+  Index,
+  Create,
+} = q
+
 const client = new faunadb.Client({
   secret: FAUNA_SECRET,
   domain: "db.us.fauna.com",
@@ -14,10 +26,10 @@ const client = new faunadb.Client({
 async function findUser({ username }) {
   const index = 'users_by_username'
   const item = await client.query(
-    q.Select([0],
-      q.Paginate(
-        q.Match(
-          q.Index(index),
+    Select([0],
+      Paginate(
+        Match(
+          Index(index),
           username
         )
       )
@@ -26,9 +38,9 @@ async function findUser({ username }) {
   const ref = item[1].value.id
   const collection = 'users'
   const user = await client.query(
-    q.Get(
-      q.Ref(
-        q.Collection(collection),
+    Get(
+      Ref(
+        Collection(collection),
         ref
       )
     )
@@ -37,7 +49,34 @@ async function findUser({ username }) {
   return user
 }
 
-async function createDraft({ items, name, username }) {
+
+async function findLeague(name) {
+  const index = 'leagues_by_name'
+  const item = await client.query(
+    Select([0],
+      Paginate(
+        Match(
+          Index(index),
+          name
+        )
+      )
+    )
+  )
+  const ref = item[1].value.id
+  const collection = 'leagues'
+  const league = await client.query(
+    Get(
+      Ref(
+        Collection(collection),
+        ref
+      )
+    )
+  )
+
+  return league
+}
+
+async function createDraft({ name, username }) {
   let user = null
 
   // check for username
@@ -51,11 +90,19 @@ async function createDraft({ items, name, username }) {
     return false
   }
 
+  const league = await findLeague(name)
+
   const collection = 'drafts'
   const new_draft = await client.query(
-    q.Create(
-      q.Collection(collection),
-      { data: { items, name, userRef: user.ref } }
+    Create(
+      Collection(collection),
+      {
+        data: {
+          name,
+          userRef: user.ref,
+          leagueRef: league.ref,
+        }
+      }
     )
   )
 
@@ -64,36 +111,15 @@ async function createDraft({ items, name, username }) {
   }
 }
 
+const name = 'The Masters 2022'
 const drafts = [
   {
     username: 'sean',
-    name: 'colors',
-    items: [
-      {
-        name: 'red'
-      },
-      {
-        name: 'yellow'
-      },
-      {
-        name: 'green'
-      }
-    ]
+    name,
   },
   {
-    username: 'sean',
-    name: 'cities',
-    items: [
-      {
-        name: 'LA'
-      },
-      {
-        name: 'NY'
-      },
-      {
-        name: 'SF'
-      }
-    ]
+    username: 'test',
+    name,
   },
 ]
 
