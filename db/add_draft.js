@@ -118,7 +118,11 @@ const drafts = [
     name,
   },
   {
-    username: 'test',
+    username: 'alice',
+    name,
+  },
+  {
+    username: 'bob',
     name,
   },
 ]
@@ -130,4 +134,3 @@ drafts.forEach((draft) => {
     console.log(e)
   })
 })
-
