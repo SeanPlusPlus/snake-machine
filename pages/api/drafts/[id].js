@@ -140,7 +140,11 @@ export default async function draft(req, res) {
     res.status(404).json(({
       message: 'Draft not found'
     }))
+    return
   }
+
+  // TODO: handle PUT requests that update draft with drafted item
+  console.log(req.method);
 
   const { data: {items, name} } = draft
   const user_ref = user.ref.id
