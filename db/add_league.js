@@ -101,7 +101,10 @@ const usernames = [
     name: 'sean',
   },
   {
-    name: 'test',
+    name: 'alice',
+  },
+  {
+    name: 'bob',
   },
 ]
 const items = [
