@@ -144,7 +144,8 @@ export default async function draft(req, res) {
   }
 
   // TODO: handle PUT requests that update draft with drafted item
-  console.log(req.method);
+  const method = req.method
+  const selected = method === 'PUT' ? (req.body) : undefined
 
   const { data: {items, name} } = draft
   const user_ref = user.ref.id
@@ -158,6 +159,7 @@ export default async function draft(req, res) {
       username,
       draft: { items, name},
       league,
+      selected,
     })
     return
   } else {
