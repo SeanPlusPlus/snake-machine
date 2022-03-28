@@ -177,7 +177,7 @@ export default async function draft(req, res) {
   const selected = method === 'PUT' ? (req.body) : undefined
 
   if (selected) {
-    const updated = {
+    const draft_updated = {
       ...data,
       items: [...items, selected]
     }
@@ -186,14 +186,43 @@ export default async function draft(req, res) {
     const updated_draft = await client.query(
       Update(
         Ref(Collection(collection), id),
-        { data: updated },
+        { data: draft_updated },
+      )
+    )
+
+    const league_to_update = await client.query(
+      Get(Ref(Collection('leagues'), league.id))
+    )
+
+    const league_updated = {
+      ...league_to_update.data,
+      items: league_to_update.data.items.map((i) => {
+        if (i.name === selected.name)  {
+          return {
+            ...i,
+            drafted: true,
+          }
+        }
+        return i
+      })
+    }
+
+    console.log(league_updated);
+
+    const updated_league = await client.query(
+      Update(
+        Ref(Collection('leagues'), league.id),
+        { data: league_updated},
       )
     )
     
     res.status(200).json({
       username,
       draft: { items: updated_draft.data.items, name },
-      league,
+      league: {
+        ...league,
+        items: updated_league.data.items,
+      },
       selected,
     })
     return

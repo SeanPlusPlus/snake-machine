@@ -125,15 +125,15 @@ const Draft = () => {
                     {draft.league.items.map((item, idx) => (
                       <li
                         key={idx}
-                        className={`pt-1 list-none ${draft.league.current_turn.name === username && 'hover:bg-sky-700 hover:rounded-md'}`}
+                        className={`pt-1 list-none ${draft.league.current_turn.name === username && !item.drafted && 'hover:bg-sky-700 hover:rounded-md'}`}
                       >
                         <label
-                          className={`label ${draft.league.current_turn.name === username && 'cursor-pointer'}`}
+                          className={`label ${draft.league.current_turn.name === username && !item.drafted && 'cursor-pointer'}`}
                         >
-                          <span className="label-text">
+                          <span className={`label-text ${item.drafted && 'line-through'}`}>
                             {item.name}
                           </span> 
-                          {draft.league.current_turn.name === user.username && (
+                          {!item.drafted && draft.league.current_turn.name === user.username && (
                             <input
                               name={item.name}
                               onChange={handleChange}
