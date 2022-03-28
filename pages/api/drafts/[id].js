@@ -191,8 +191,14 @@ export default async function draft(req, res) {
       Get(Ref(Collection('leagues'), league.id))
     )
 
+    const current_pick = {
+      draft_order_idx: league_to_update.data.current_pick.draft_order_idx + 1,
+      direction: 'Left',
+    }
+
     const league_updated = {
       ...league_to_update.data,
+      current_pick,
       items: league_to_update.data.items.map((i) => {
         if (i.name === selected.name)  {
           return {
