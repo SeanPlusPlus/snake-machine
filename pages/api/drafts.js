@@ -16,6 +16,7 @@ const {
   Lambda,
   Var,
   Map,
+  Select,
 } = q
 
 const client = new faunadb.Client({
@@ -28,10 +29,10 @@ const client = new faunadb.Client({
 async function getUserRef({ username }) {
   const index = 'users_by_username'
   const item = await client.query(
-    q.Select([0],
-      q.Paginate(
-        q.Match(
-          q.Index(index),
+    Select([0],
+      Paginate(
+        Match(
+          Index(index),
           username
         )
       )
@@ -40,9 +41,9 @@ async function getUserRef({ username }) {
   const ref = item[1].value.id
   const collection = 'users'
   const user = await client.query(
-    q.Get(
-      q.Ref(
-        q.Collection(collection),
+    Get(
+      Ref(
+        Collection(collection),
         ref
       )
     )
@@ -115,7 +116,7 @@ async function getLeague(id) {
   }
 }
 
-export default async function draft(req, res) {
+export default async function drafts(req, res) {
   const session = await getLoginSession(req)
   if (!session) {
     res.status(401).json({
