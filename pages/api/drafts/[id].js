@@ -212,7 +212,7 @@ export default async function draft(req, res) {
     const updated_league = await client.query(
       Update(
         Ref(Collection('leagues'), league.id),
-        { data: league_updated},
+        { data: league_updated },
       )
     )
     
