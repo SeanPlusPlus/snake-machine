@@ -7,6 +7,7 @@ import Header from '../../components/header'
 import Layout from '../../components/layout'
 import Warning from '../../components/warning'
 import Selection from '../../components/selection'
+import Fetching from '../../components/fetching'
 
 const myPick = (draft_order, current_pick, username) => {
   return draft_order[current_pick.draft_order_idx].username === username
@@ -104,6 +105,7 @@ const Draft = () => {
   return (
     username ? (
       <Layout>
+        {!draft && <Fetching />}
         {draft && (
           <>
             <h1 className="text-4xl text-left bottom-2 border-b-2 border-indigo-500">{draft.league.name}</h1>

@@ -225,6 +225,7 @@ export default async function draft(req, res) {
       league: {
         ...league,
         items: updated_league.data.items,
+        current_pick: updated_league.data.current_pick,
       },
       selected,
     })
