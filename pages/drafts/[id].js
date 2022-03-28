@@ -131,18 +131,25 @@ const Draft = () => {
                 <div className="form-control">
                   <ul className="list-disc text-left text-md">
                     {draft.league.items.map((item, idx) => (
-                      <li key={idx} className="pt-1 list-none hover:bg-sky-700 hover:rounded-md">
-                        <label className="label cursor-pointer">
+                      <li
+                        key={idx}
+                        className={`pt-1 list-none ${draft.league.current_turn.name === username && 'hover:bg-sky-700 hover:rounded-md'}`}
+                      >
+                        <label
+                          className={`label ${draft.league.current_turn.name === username && 'cursor-pointer'}`}
+                        >
                           <span className="label-text">
                             {item.name}
                           </span> 
-                          <input
-                            name={item.name}
-                            onChange={handleChange}
-                            type="checkbox"
-                            checked={item.drafted ? 'checked' : ''}
-                            className="checkbox"
-                          />
+                          {draft.league.current_turn.name === user.username && (
+                            <input
+                              name={item.name}
+                              onChange={handleChange}
+                              type="checkbox"
+                              checked={item.drafted ? 'checked' : ''}
+                              className="checkbox"
+                            />
+                          )}
                         </label>
                       </li>
                     ))}
@@ -157,7 +164,10 @@ const Draft = () => {
                 <div className="divider mb-0 mt-1" />
                 <ul className="list-disc text-left text-md">
                   {draft.league.draft_order.map((user, idx) => (
-                    <li key={idx} className={`pt-1 ${draft.league.current_turn.name === user.username ? 'underline' : 'list-none'}`}>
+                    <li
+                      key={idx}
+                      className={`pt-1 ${draft.league.current_turn.name === user.username ? 'underline' : 'list-none'}`}
+                    >
                       {user.username}
                     </li>
                   ))}
