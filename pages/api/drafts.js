@@ -83,6 +83,19 @@ async function getDrafts(user) {
   return drafts
 }
 
+async function getUser(id) {
+  const collection = 'users'
+  try {
+    const user = await client.query(
+      Get(Ref(Collection(collection), id))
+    )
+
+    return user 
+  } catch {
+    throw new Error()
+  }
+}
+
 async function getLeague(id) {
   const collection = 'leagues'
   try {
@@ -92,7 +105,25 @@ async function getLeague(id) {
 
     const { ref, data: { name, items, draft_order }} = league
 
-    return { id:ref.id , name, items, draft_order }
+    // draft_order.forEach((d) => console.log(d.value.id))
+
+
+    const userLookups = draft_order.map((d) => (getUser(d.value.id)))
+    const users = []
+    for (const lookup of userLookups) {
+      const result = await lookup
+      users.push(result)
+    }
+
+    const draft_user_order = draft_order.map((u) => {
+      const { value: { id }} = u
+      const { data: { username }} = _find(users, (user) => user.ref.id === id)
+      return {
+        username
+      }
+    })
+
+    return { id:ref.id, draft_order: draft_user_order, name, items }
   } catch {
     throw new Error()
   }
