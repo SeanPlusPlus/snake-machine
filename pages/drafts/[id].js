@@ -157,7 +157,7 @@ const Draft = () => {
                 <div className="divider mb-0 mt-1" />
                 <ul className="list-disc text-left text-md">
                   {draft.league.draft_order.map((user, idx) => (
-                    <li key={idx} className="pt-1">
+                    <li key={idx} className={`pt-1 ${draft.league.current_turn.name === user.username ? 'underline' : 'list-none'}`}>
                       {user.username}
                     </li>
                   ))}
