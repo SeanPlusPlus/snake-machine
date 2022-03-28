@@ -92,6 +92,20 @@ const Draft = () => {
         {draft && (
           <>
             <h1 className="text-4xl text-left bottom-2 border-b-2 border-indigo-500">{draft.league.name}</h1>
+            
+            <div className="card bg-base-100 shadow-xl mt-4">
+              <div className="card-body w-[360px]">
+                <h4 className="text-2xl text-left">My Draft</h4>
+                <div className="divider mb-0 mt-1" />
+                <ul className="list-disc text-left text-md">
+                  {draft.draft.items.map((item, idx) => (
+                    <li key={idx} className="pt-1">
+                      {item.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
 
             <div className="card bg-base-100 shadow-xl mt-4">
               <div className="card-body w-[360px]">
@@ -109,12 +123,12 @@ const Draft = () => {
 
             <div className="card bg-base-100 shadow-xl mt-4">
               <div className="card-body w-[360px]">
-                <h4 className="text-2xl text-left">My Draft</h4>
+                <h4 className="text-2xl text-left">Draft Order</h4>
                 <div className="divider mb-0 mt-1" />
                 <ul className="list-disc text-left text-md">
-                  {draft.draft.items.map((item, idx) => (
+                  {draft.league.draft_order.map((user, idx) => (
                     <li key={idx} className="pt-1">
-                      {item.name}
+                      {user.username}
                     </li>
                   ))}
                 </ul>
