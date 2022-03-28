@@ -92,9 +92,11 @@ const Draft = () => {
         {draft && (
           <>
             <h1 className="text-4xl text-left bottom-2 border-b-2 border-indigo-500">{draft.league.name}</h1>
-            
+
+            <div className="w-[340px] lg:grid lg:grid-cols-3 lg:gap-3 lg:w-[1000px]">
+ 
             <div className="card bg-base-100 shadow-xl mt-4">
-              <div className="card-body w-[360px]">
+              <div className="card-body">
                 <h4 className="text-2xl text-left">My Draft</h4>
                 <div className="divider mb-0 mt-1" />
                 <ul className="list-disc text-left text-md">
@@ -108,7 +110,7 @@ const Draft = () => {
             </div>
 
             <div className="card bg-base-100 shadow-xl mt-4">
-              <div className="card-body w-[360px]">
+              <div className="card-body">
                 <h4 className="text-2xl text-left">Items</h4>
                 <div className="divider mb-0 mt-1" />
                 <ul className="list-disc text-left text-md">
@@ -122,7 +124,7 @@ const Draft = () => {
             </div>
 
             <div className="card bg-base-100 shadow-xl mt-4">
-              <div className="card-body w-[360px]">
+              <div className="card-body">
                 <h4 className="text-2xl text-left">Draft Order</h4>
                 <div className="divider mb-0 mt-1" />
                 <ul className="list-disc text-left text-md">
@@ -133,6 +135,8 @@ const Draft = () => {
                   ))}
                 </ul>
               </div>
+            </div>
+
             </div>
 
           </>

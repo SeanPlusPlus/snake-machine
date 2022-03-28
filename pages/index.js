@@ -29,7 +29,7 @@ const Home = () => {
     return (
       <Layout>
         <div className="card bg-base-100 shadow-xl">
-          <div className="card-body w-[360px] h-[120px]">
+          <div className="card-body w-[340px] h-[120px]">
             <Link href="/login">
               <a className="btn btn-outline">Login</a>
             </Link>
@@ -45,7 +45,7 @@ const Home = () => {
         <>
           <h1 className="text-4xl text-left bottom-2 border-b-2 border-indigo-500">My Drafts</h1>
           <div className="card bg-base-100 shadow-xl mt-4">
-            <div className="card-body w-[360px]">
+            <div className="card-body w-[340px]">
               <Drafts />
             </div>
           </div>
@@ -53,7 +53,7 @@ const Home = () => {
       )}
       {fetching && (
         <div className="card bg-base-100 shadow-xl">
-          <div className="card-body w-[360px] h-[120px]">
+          <div className="card-body w-[340px] h-[120px]">
               <div className="m-auto">
                 <Fetching />
               </div>
