@@ -1,4 +1,8 @@
+node db/collection/delete.js && \
+echo "Collections deleted, sleeping just over 1 min"
+sleep 65;
 node db/collection/initialize.js && \
+echo "Collections initialized"
 node db/index/users_by_username.js && \
 node db/index/users_by_email.js && \
 node db/index/leagues_by_name.js && \
