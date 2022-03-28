@@ -102,7 +102,7 @@ async function getLeague(id) {
     })
 
     const admin_user = await getUser(admin)
-    const admin_user_name = { name: admin_user.data.username }
+    const admin_user_name = { username: admin_user.data.username }
 
     return {
       id:ref.id,
