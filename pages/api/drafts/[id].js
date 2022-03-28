@@ -1,4 +1,4 @@
-import { getLoginSession } from '../../lib/auth'
+import { getLoginSession } from '../../../lib/auth'
 import faunadb from 'faunadb'
 import _find from 'lodash/find'
 
@@ -153,29 +153,37 @@ export default async function draft(req, res) {
     return
   }
 
-  const drafts = await getDrafts(user)
-  const { data } = drafts
-  
-  const leagueLookups = data.map((d) => (getLeague(d.data.leagueRef.id)))
-  const leagues = []
-  for (const lookup of leagueLookups) {
-    const result = await lookup
-    leagues.push(result)
+  const {
+    query: { id },
+  } = req
+
+  let draft
+  try {
+    draft = await getDraft(id)
+  } catch {
+    res.status(404).json(({
+      message: 'Draft not found'
+    }))
   }
 
-  res.status(200).json({
-    username,
-    drafts: data.map((el) => {
-    
-      const league = _find(leagues, (l) => l.id === el.data.leagueRef.id)
-      return {
-        id: el.ref.id,
-        items: el.data.items,
-        league: {
-          name: league.name,
-        }
-      }
+  const { data: {items, name} } = draft
+  const user_ref = user.ref.id
+  const draft_user_ref = draft.data.userRef.value.id
+
+  const league_id = draft.data.leagueRef.id
+  const league = await getLeague(league_id)
+  
+  if (user_ref === draft_user_ref) {
+    res.status(200).json({
+      username,
+      draft: { items, name},
+      league,
     })
-  })
-  return
+    return
+  } else {
+    res.status(403).json({
+      message: 'Not your draft'
+    })
+    return
+  }
 }

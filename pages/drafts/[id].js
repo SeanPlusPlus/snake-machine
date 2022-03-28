@@ -25,7 +25,7 @@ const Draft = () => {
   const path = router.asPath
 
   async function getDraft() {
-    const res = await fetch(`/api/drafts?id=${id}`)
+    const res = await fetch(`/api/drafts/${id}`)
     const json = await res.json()
     if (res.status !== 200) {
       throw new Error(json.message)
