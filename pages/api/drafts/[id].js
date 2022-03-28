@@ -193,9 +193,47 @@ export default async function draft(req, res) {
       Get(Ref(Collection('leagues'), league.id))
     )
 
+    // calculate current pick
+    let updated_direction = null
+    let updated_draft_order_idx = null
+
+    const previous_draft_order_idx = league_to_update.data.current_pick.draft_order_idx
+    const previous_direction = league_to_update.data.current_pick.direction
+
+    if (previous_direction === 'Right') {
+      updated_draft_order_idx = previous_draft_order_idx + 1
+
+      // are we at the end of the array
+      if ((updated_draft_order_idx + 1) === league_to_update.data.draft_order.length) {
+        updated_direction = 'Hold'
+      } else {
+        updated_direction = 'Right'
+      }
+    } else if (previous_direction === 'Left') {
+      updated_draft_order_idx = previous_draft_order_idx - 1
+
+      // are we at the start of the array
+      if (updated_draft_order_idx === 0) {
+        updated_direction = 'Hold'
+      } else {
+        updated_direction = 'Left'
+      }
+    } else { // Hold
+      updated_draft_order_idx = previous_draft_order_idx
+
+      // are we at the start of the array
+      if (updated_draft_order_idx === 0) {
+        updated_direction = 'Right'
+      } else {
+        updated_direction = 'Left'
+      }
+    }
+
+
+
     const current_pick = {
-      draft_order_idx: league_to_update.data.current_pick.draft_order_idx + 1,
-      direction: 'Left',
+      draft_order_idx: updated_draft_order_idx,
+      direction: updated_direction,
     }
 
     const league_updated = {
