@@ -90,6 +90,8 @@ async function createDraft({ name, username }) {
     return false
   }
 
+  const current_turn = await findUser({ username: 'sean' })
+
   const league = await findLeague(name)
 
   const collection = 'drafts'
@@ -101,6 +103,8 @@ async function createDraft({ name, username }) {
           userRef: user.ref,
           leagueRef: league.ref,
           items: [],
+          admin: current_turn,
+          current_turn,
         }
       }
     )

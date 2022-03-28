@@ -66,10 +66,14 @@ async function createLeague({ name, usernames, items }) {
     _find(userRefs, {name: u.name}).userRef
   ))
 
+  const current_turn = await findUser({ username: 'sean' })
+
   const league = {
     name,
     draft_order,
-    items: items.map((name) => ({ name }))
+    items: items.map((name) => ({ name })),
+    admin: current_turn,
+    current_turn,
   }
 
   const collection = 'leagues'
