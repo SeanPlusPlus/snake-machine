@@ -77,7 +77,7 @@ async function createLeague({ name, usernames, items }) {
     name,
     draft_order,
     items: items.map((name) => ({ name })),
-    admin,
+    admin: admin.ref.id,
     current_pick,
     closed: false,
   }

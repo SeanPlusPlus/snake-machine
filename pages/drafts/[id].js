@@ -8,6 +8,14 @@ import Layout from '../../components/layout'
 import Warning from '../../components/warning'
 import Selection from '../../components/selection'
 
+const myPick = (draft_order, current_pick, username) => {
+  return draft_order[current_pick.draft_order_idx].username === username
+}
+
+const currentPick = (draft_order, current_pick, username) => {
+  return draft_order[current_pick.draft_order_idx].username === username
+}
+
 const Draft = () => {
   const {
     user: {
@@ -125,15 +133,15 @@ const Draft = () => {
                     {draft.league.items.map((item, idx) => (
                       <li
                         key={idx}
-                        className={`pt-1 list-none ${draft.league.current_turn.name === username && !item.drafted && 'hover:bg-sky-700 hover:rounded-md'}`}
+                        className={`pt-1 list-none ${myPick(draft.league.draft_order, draft.league.current_pick, username) && !item.drafted && 'hover:bg-sky-700 hover:rounded-md'}`}
                       >
                         <label
-                          className={`label ${draft.league.current_turn.name === username && !item.drafted && 'cursor-pointer'}`}
+                          className={`label ${myPick(draft.league.draft_order, draft.league.current_pick, username) && !item.drafted && 'cursor-pointer'}`}
                         >
                           <span className={`label-text ${item.drafted && 'line-through'}`}>
                             {item.name}
                           </span> 
-                          {!item.drafted && draft.league.current_turn.name === user.username && (
+                          {!item.drafted && myPick(draft.league.draft_order, draft.league.current_pick, username) && (
                             <input
                               name={item.name}
                               onChange={handleChange}
@@ -158,9 +166,10 @@ const Draft = () => {
                   {draft.league.draft_order.map((user, idx) => (
                     <li
                       key={idx}
-                      className={`pt-1 ${draft.league.current_turn.name !== user.username && 'list-none'}`}
+                      className={`pt-1 ${currentPick(draft.league.draft_order, draft.league.current_pick, user.username) !== user.username && 'list-none'}`}
                     >
-                      {idx + 1}. <span className={draft.league.current_turn.name === user.username ? 'underline' : ''}>{user.username}</span>
+                    
+                      {idx + 1}. <span className={currentPick(draft.league.draft_order, draft.league.current_pick, user.username) ? 'underline' : ''}>{user.username}</span>
                     </li>
                   ))}
                 </ul>

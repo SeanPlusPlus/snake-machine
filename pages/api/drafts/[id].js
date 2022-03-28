@@ -85,7 +85,7 @@ async function getLeague(id) {
       Get(Ref(Collection(collection), id))
     )
 
-    const { ref, data: { name, items, draft_order, current_turn, admin }} = league
+    const { ref, data: { name, items, draft_order, current_pick, admin }} = league
     const userLookups = draft_order.map((d) => (getUser(d.value.id)))
     const users = []
     for (const lookup of userLookups) {
@@ -101,10 +101,7 @@ async function getLeague(id) {
       }
     })
 
-    const current_turn_user = await getUser(current_turn.ref.id)
-    const current_turn_user_name = { name: current_turn_user.data.username }
-
-    const admin_user = await getUser(admin.ref.id)
+    const admin_user = await getUser(admin)
     const admin_user_name = { name: admin_user.data.username }
 
     return {
@@ -112,7 +109,7 @@ async function getLeague(id) {
       draft_order: draft_user_order,
       name,
       items,
-      current_turn: current_turn_user_name,
+      current_pick,
       admin: admin_user_name,
     }
   } catch {
