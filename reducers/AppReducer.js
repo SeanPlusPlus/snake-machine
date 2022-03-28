@@ -24,6 +24,11 @@ export default (state, action) => {
         ...state,
         draft: action.payload,
       }
+    case 'UPDATE_SELECTION':
+      return {
+        ...state,
+        selection: action.payload,
+      }
     default:
       return state;
   }

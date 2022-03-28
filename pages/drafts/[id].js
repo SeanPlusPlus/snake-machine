@@ -6,6 +6,7 @@ import { GlobalContext } from '../../context/GlobalState'
 import Header from '../../components/header'
 import Layout from '../../components/layout'
 import Warning from '../../components/warning'
+import Selection from '../../components/selection'
 
 const Draft = () => {
   const {
@@ -14,6 +15,7 @@ const Draft = () => {
     },
     draft,
     setDraft,
+    setSelection,
   } = useContext(GlobalContext)
   const user = useUser()
   const username = user && user.username
@@ -47,17 +49,7 @@ const Draft = () => {
 
   const handleChange = async (e) => {
     e.preventDefault()
-    console.log(e.target.name)
-
-    const options = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: e.target.name })
-    }
-    const res = await fetch(`/api/drafts/${id}`, options)
-    const json = await res.json()
-
-    console.log(json);
+    setSelection(e.target.name)
   }
 
   if (warning) {
@@ -179,6 +171,7 @@ const Draft = () => {
 
           </>
         )}
+        <Selection />
       </Layout>
     ) : (
       <></>
