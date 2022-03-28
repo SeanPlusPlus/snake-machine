@@ -51,20 +51,6 @@ async function getUserRef({ username }) {
   return user
 }
 
-
-async function getDraft(id) {
-  const collection = 'drafts'
-  try {
-    const draft = await client.query(
-      Get(Ref(Collection(collection), id))
-    )
-
-    return draft
-  } catch {
-    throw new Error()
-  }
-}
-
 async function getDrafts(user) {
   const index = 'drafts_by_user'
   const collection = 'users'

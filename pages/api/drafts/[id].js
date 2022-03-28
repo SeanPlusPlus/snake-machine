@@ -65,24 +65,6 @@ async function getDraft(id) {
   }
 }
 
-async function getDrafts(user) {
-  const index = 'drafts_by_user'
-  const collection = 'users'
-  const drafts = await client.query(
-    Map(
-      Paginate(
-        Match(
-          Index(index),
-          Ref(Collection(collection), user.ref.id)
-        )
-      ),
-      Lambda('draftRef', Get(Var('draftRef')))
-    )
-  )
-
-  return drafts
-}
-
 async function getUser(id) {
   const collection = 'users'
   try {
