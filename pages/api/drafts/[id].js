@@ -1,6 +1,7 @@
 import { getLoginSession } from '../../../lib/auth'
 import faunadb from 'faunadb'
 import _find from 'lodash/find'
+import _some from 'lodash/some'
 import { data } from 'autoprefixer'
 
 require('dotenv').config()
@@ -161,19 +162,20 @@ export default async function draft(req, res) {
 
   const league_id = draft.data.leagueRef.id
   const league = await getLeague(league_id)
-
-  
-  if (user_ref !== draft_user_ref) {
-    res.status(403).json({
-      message: 'Not your draft'
-    })
-    return
-  }
   
   const method = req.method
   const selected = method === 'PUT' ? (req.body) : undefined
 
   if (selected) {
+    
+    // only you can update your draft
+    if (user_ref !== draft_user_ref) {
+      res.status(403).json({
+        message: 'Not your draft'
+      })
+      return
+    }
+    
     const draft_updated = {
       ...data,
       items: [...items, selected]
@@ -210,8 +212,6 @@ export default async function draft(req, res) {
       })
     }
 
-    console.log(league_updated);
-
     const updated_league = await client.query(
       Update(
         Ref(Collection('leagues'), league.id),
@@ -231,10 +231,20 @@ export default async function draft(req, res) {
     })
     return
   } else {
-    res.status(200).json({
-      username,
-      draft: { items, name },
-      league,
-    })
+
+    // you can only see drafts if you are in the league
+    const my_league = _some(league.draft_order, { username })
+    if (!my_league) {
+      res.status(403).json({
+        message: 'Not your draft'
+      })
+      return
+    } else {
+      res.status(200).json({
+        username,
+        draft: { items, name },
+        league,
+      })
+    }
   }
 }
