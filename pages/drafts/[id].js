@@ -3,11 +3,13 @@ import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import { useUser } from '../../lib/hooks'
 import { GlobalContext } from '../../context/GlobalState'
+import { useInterval } from '../../utils/useInterval'
 import Header from '../../components/header'
 import Layout from '../../components/layout'
 import Warning from '../../components/warning'
 import Selection from '../../components/selection'
 import Fetching from '../../components/fetching'
+import { log } from '../../utils/logger'
 
 const myPick = (draft_order, current_pick, username) => {
   return draft_order[current_pick.draft_order_idx].username === username
@@ -50,11 +52,20 @@ const Draft = () => {
       getDraft().then((data) => {
         setDraft(data)
       }).catch((e) => {
-        console.log(e.message);
         setWarning(e.message)
       })
     }
   }, [username]);
+
+  useInterval(() => {
+    getDraft().then((data) => {
+      const server = data.league.items.filter((i) => i.drafted).length
+      const client = draft.league.items.filter((i) => i.drafted).length
+      if (server !== client) {
+        setDraft(data)
+      }
+    })
+  }, 1000 * 3);
 
   const handleChange = async (e) => {
     e.preventDefault()
