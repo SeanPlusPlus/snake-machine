@@ -1,6 +1,7 @@
 import { getLoginSession } from '../../../lib/auth'
 import faunadb from 'faunadb'
 import _find from 'lodash/find'
+import { data } from 'autoprefixer'
 
 require('dotenv').config()
 
@@ -14,6 +15,7 @@ const {
   Match,
   Index,
   Select,
+  Update,
 } = q
 
 const client = new faunadb.Client({
@@ -156,29 +158,50 @@ export default async function draft(req, res) {
     return
   }
 
-  // TODO: handle PUT requests that update draft with drafted item
-  const method = req.method
-  const selected = method === 'PUT' ? (req.body) : undefined
-
   const { data: {items, name} } = draft
   const user_ref = user.ref.id
   const draft_user_ref = draft.data.userRef.value.id
 
   const league_id = draft.data.leagueRef.id
   const league = await getLeague(league_id)
+
   
-  if (user_ref === draft_user_ref) {
+  if (user_ref !== draft_user_ref) {
+    res.status(403).json({
+      message: 'Not your draft'
+    })
+    return
+  }
+  
+  const method = req.method
+  const selected = method === 'PUT' ? (req.body) : undefined
+
+  if (selected) {
+    const updated = {
+      ...data,
+      items: [...items, selected]
+    }
+
+    const collection = 'drafts'
+    const updated_draft = await client.query(
+      Update(
+        Ref(Collection(collection), id),
+        { data: updated },
+      )
+    )
+    
     res.status(200).json({
       username,
-      draft: { items, name},
+      draft: { items: updated_draft.data.items, name },
       league,
       selected,
     })
     return
   } else {
-    res.status(403).json({
-      message: 'Not your draft'
+    res.status(200).json({
+      username,
+      draft: { items, name },
+      league,
     })
-    return
   }
 }

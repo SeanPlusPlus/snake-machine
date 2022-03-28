@@ -8,6 +8,7 @@ const Selection = () => {
   const {
     selection,
     setSelection,
+    setDraft,
   } = useContext(GlobalContext)
 
   const handleClose = () => {
@@ -27,8 +28,9 @@ const Selection = () => {
     }
     const res = await fetch(`/api/drafts/${id}`, options)
     const json = await res.json()
-
-    console.log(json);
+    setDraft(json)
+    setSubmitting(false)
+    setSelection(null) 
   }
   
   return (
