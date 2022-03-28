@@ -158,9 +158,9 @@ const Draft = () => {
                   {draft.league.draft_order.map((user, idx) => (
                     <li
                       key={idx}
-                      className={`pt-1 ${draft.league.current_turn.name === user.username ? 'underline' : 'list-none'}`}
+                      className={`pt-1 ${draft.league.current_turn.name !== user.username && 'list-none'}`}
                     >
-                      {user.username}
+                      {idx + 1}. <span className={draft.league.current_turn.name === user.username ? 'underline' : ''}>{user.username}</span>
                     </li>
                   ))}
                 </ul>

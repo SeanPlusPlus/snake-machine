@@ -1,8 +1,10 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import { GlobalContext } from '../context/GlobalState'
+import Fetching from './fetching'
 
 const Selection = () => {
+  const [submitting, setSubmitting] = useState(null)
   const {
     selection,
     setSelection,
@@ -16,6 +18,8 @@ const Selection = () => {
   const { id } = router.query
 
   const handleSubmit = async () => {
+    setSubmitting(true)
+ 
     const options = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -41,9 +45,17 @@ const Selection = () => {
             <code className="font-semibold">{selection}</code>
           </span>
         </p>
-        <div className="modal-action pt-5">
-          <label htmlFor="my-modal" className="btn" onClick={handleClose}>Cancel</label>
-          <label htmlFor="my-modal" className="btn btn-outline btn-info" onClick={handleSubmit}>Submit</label>
+        <div className="modal-action pt-5 h-[74px]">
+          {submitting ? (
+              <div className="border-2 rounded-md pl-8 pr-8 pt-2 pb-1">
+                <Fetching />
+              </div>
+          ) : (
+            <>
+              <label htmlFor="my-modal" className="btn" onClick={handleClose}>Cancel</label>
+              <label htmlFor="my-modal" className="btn btn-outline btn-info" onClick={handleSubmit}>Submit</label>
+            </>
+          )}
         </div>
       </div>
     </div>
