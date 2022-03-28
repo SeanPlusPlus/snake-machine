@@ -116,6 +116,7 @@ const items = [
   'Jordan Spieth',
   'Bryson DeChambeau',
   'Brooks Koepka',
+  'Si-woo Kim',
 ]
 
 createLeague({name, usernames, items}).then((data) => {
