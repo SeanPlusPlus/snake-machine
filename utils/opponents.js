@@ -16,6 +16,8 @@ export const getOpponents = (current, payload) => {
     }
   }
 
+  const obj = current[name]
+
   if (_has(payload, 'display')) {
     const { display } = payload
     return {
