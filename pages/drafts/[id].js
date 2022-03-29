@@ -58,13 +58,17 @@ const Draft = () => {
   }, [username]);
 
   useInterval(() => {
-    getDraft().then((data) => {
-      const server = data.league.items.filter((i) => i.drafted).length
-      const client = draft.league.items.filter((i) => i.drafted).length
-      if (server !== client) {
-        setDraft(data)
-      }
-    })
+    if (!authenticated) {
+      return
+    } else {
+      getDraft().then((data) => {
+        const server = data.league.items.filter((i) => i.drafted).length
+        const client = draft.league.items.filter((i) => i.drafted).length
+        if (server !== client) {
+          setDraft(data)
+        }
+      })
+    }
   }, 1000 * 3);
 
   const handleChange = async (e) => {
@@ -182,7 +186,12 @@ const Draft = () => {
                       className={`pt-1 ${currentPick(draft.league.draft_order, draft.league.current_pick, user.username) !== user.username && 'list-none'}`}
                     >
                     
-                      {idx + 1}. <span className={currentPick(draft.league.draft_order, draft.league.current_pick, user.username) ? 'underline' : ''}>{user.username}</span>
+                      <span className="pr-1">
+                        {idx + 1}.
+                      </span>
+                      <span className={currentPick(draft.league.draft_order, draft.league.current_pick, user.username) ? 'underline' : ''}>
+                        {user.username}
+                      </span>
                     </li>
                   ))}
                 </ul>
