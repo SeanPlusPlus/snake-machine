@@ -4,7 +4,7 @@ import { GlobalContext } from '../context/GlobalState'
 import Fetching from './fetching'
 
 const Drafts = () => {
-  const { drafts, setDrafts } = useContext(GlobalContext)
+  const { user: {username}, drafts, setDrafts } = useContext(GlobalContext)
 
   async function getDrafts() {
     const res = await fetch('/api/drafts')
@@ -32,13 +32,13 @@ const Drafts = () => {
       <ul className="list-disc text-left text-xl">
         {drafts.map((d, i) => (
           <li key={i} className="pt-1 pb-1">
-            <Link href={`/drafts/${d.id}`}>
+            <Link href={`/league/${d.league.id}`}>
               <a className="link link-secondary">
                 {d.league.name}
               </a>
             </Link>
             <ul className="list-disc text-left ml-4 text-sm">
-              {d.items.map((item, idx) => (
+              {d.league.picks[username] && d.league.picks[username].items.map((item, idx) => (
                 <li key={idx} className="pt-1">
                   {item.name}
                 </li>

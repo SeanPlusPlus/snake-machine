@@ -119,23 +119,23 @@ async function createUser({ username, password, email }) {
   }
 }
 
-var username = 'sean'
-var email = 'seanplusplus@gmail.com'
-var password = 'seans'
-createUser({ username, email, password }).then((res) => {
-  console.log(res);
-})
-
-username = 'alice'
-email = 'alice@gmail.com'
-password = 'foobar'
+var username = 'alice'
+var email = 'alice@example.com'
+var password = 'alice'
 createUser({ username, email, password }).then((res) => {
   console.log(res);
 })
 
 username = 'bob'
-email = 'bob@gmail.com'
-password = 'foobar'
+email = 'bob@example.com'
+password = 'bob'
+createUser({ username, email, password }).then((res) => {
+  console.log(res);
+})
+
+username = 'carlos'
+email = 'carlos@example.com'
+password = 'carlos'
 createUser({ username, email, password }).then((res) => {
   console.log(res);
 })
