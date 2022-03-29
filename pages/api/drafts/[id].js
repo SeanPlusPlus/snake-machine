@@ -52,7 +52,6 @@ async function getUserRef({ username }) {
   return user
 }
 
-
 async function getDraft(id) {
   const collection = 'drafts'
   try {
@@ -86,7 +85,7 @@ async function getLeague(id) {
       Get(Ref(Collection(collection), id))
     )
 
-    const { ref, data: { name, items, draft_order, current_pick, admin }} = league
+    const { ref, data: { name, items, draft_order, current_pick, admin, picks }} = league
     const userLookups = draft_order.map((d) => (getUser(d.value.id)))
     const users = []
     for (const lookup of userLookups) {
@@ -112,6 +111,7 @@ async function getLeague(id) {
       items,
       current_pick,
       admin: admin_user_name,
+      picks,
     }
   } catch {
     throw new Error()
@@ -229,12 +229,29 @@ export default async function draft(req, res) {
       }
     }
 
-
-
     const current_pick = {
       draft_order_idx: updated_draft_order_idx,
       direction: updated_direction,
     }
+
+    const getPicks = (picks, username, selected) => {
+      if (!picks[username]) {
+        return {
+          ...picks,
+          [username]: {
+            items: [{name: selected}]
+          }
+        }
+      }
+      return {
+        ...picks,
+        [username]: {
+          items: [...picks[username].items, {name: selected}]
+        }
+      }
+    }
+
+    const picks = getPicks(league_to_update.data.picks, username, selected) 
 
     const league_updated = {
       ...league_to_update.data,
@@ -247,7 +264,8 @@ export default async function draft(req, res) {
           }
         }
         return i
-      })
+      }),
+      picks,
     }
 
     const updated_league = await client.query(
@@ -264,6 +282,7 @@ export default async function draft(req, res) {
         ...league,
         items: updated_league.data.items,
         current_pick: updated_league.data.current_pick,
+        picks: updated_league.data.picks,
       },
       selected,
     })

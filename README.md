@@ -10,4 +10,4 @@ npm run dev
 
 ### Schema
 
-![schema](https://i.imgur.com/5YeajlU.png)
+![schema](https://i.imgur.com/zGJtvBU.png)

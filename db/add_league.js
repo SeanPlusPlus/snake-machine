@@ -76,6 +76,7 @@ async function createLeague({ name, usernames, items }) {
   const league = {
     name,
     draft_order,
+    picks: {},
     items: items.map((name) => ({ name })),
     admin: admin.ref.id,
     current_pick,
