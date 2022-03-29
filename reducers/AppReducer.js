@@ -1,4 +1,5 @@
 import { log } from '../utils/logger'
+import { getOpponents } from '../utils/opponents'
 
 export default (state, action) => {
   log('previous', 'rgb(229, 231, 235)', state);
@@ -28,6 +29,11 @@ export default (state, action) => {
       return {
         ...state,
         selection: action.payload,
+      }
+    case 'UPDATE_OPPONENTS':
+      return {
+        ...state,
+        opponents: getOpponents(state.opponents, action.payload),
       }
     default:
       return state;

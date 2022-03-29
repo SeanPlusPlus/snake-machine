@@ -27,6 +27,8 @@ const Draft = () => {
     draft,
     setDraft,
     setSelection,
+    opponents,
+    setOpponents,
   } = useContext(GlobalContext)
   const user = useUser()
   const username = user && user.username
@@ -75,6 +77,12 @@ const Draft = () => {
     e.preventDefault()
     setSelection(e.target.name)
   }
+
+  const handleDraftExpand = (e) => {
+    e.preventDefault()
+    setOpponents({name: e.target.name, display: true})
+  }
+
 
   if (warning) {
     return (
@@ -190,7 +198,9 @@ const Draft = () => {
                         {idx + 1}.
                       </span>
                       <span className={currentPick(draft.league.draft_order, draft.league.current_pick, user.username) ? 'underline' : ''}>
-                        {user.username}
+                        <a className="link text-sky-500 no-underline"onClick={handleDraftExpand} name={user.username}>
+                          {user.username}
+                        </a>
                       </span>
                     </li>
                   ))}

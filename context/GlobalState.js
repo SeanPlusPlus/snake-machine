@@ -12,6 +12,7 @@ const initialState = {
   draft: null,
   leagues: null,
   selection: null,
+  opponents: {},
 }
 
 export const GlobalContext = createContext(initialState);
@@ -57,6 +58,13 @@ export const GlobalProvider = ({
       payload: data 
     });
   }
+  
+  function setOpponents(data) {
+    dispatch({
+      type: 'UPDATE_OPPONENTS',
+      payload: data 
+    });
+  }
 
   useEffect(() => {
     log('state', 'rgb(217, 38, 169)', state);
@@ -74,6 +82,8 @@ export const GlobalProvider = ({
         setLeagues,
         selection: state.selection,
         setSelection,
+        opponents: state.opponents,
+        setOpponents,
       }
     } > {
       children
