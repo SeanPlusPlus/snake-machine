@@ -27,9 +27,9 @@ const Draft = () => {
     draft,
     setDraft,
     setSelection,
-    opponents,
     setOpponents,
   } = useContext(GlobalContext)
+
   const user = useUser()
   const username = user && user.username
 
