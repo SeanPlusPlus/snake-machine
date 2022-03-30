@@ -154,8 +154,8 @@ export default async function draft(req, res) {
     return
   }
 
-  const user_is_up = league.draft_order[current_pick.draft_order_idx].username === username
-  if (!user_is_up) {
+  const user_ready_to_pick = league.draft_order[league.current_pick.draft_order_idx].username === username
+  if (!user_ready_to_pick) {
     res.status(403).json({
       message: 'Not your pick dude'
     })
