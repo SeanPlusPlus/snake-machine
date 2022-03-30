@@ -79,9 +79,8 @@ const League = () => {
 
   const handleDraftExpand = (e) => {
     e.preventDefault()
-    setOpponents({name: e.target.name, display: true})
+    setOpponents({name: e.target.name, display: true, picks: league.picks})
   }
-
 
   if (warning) {
     return (

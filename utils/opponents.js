@@ -3,14 +3,17 @@ import _has from 'lodash/has'
 export const getOpponents = (current, payload) => {
   const { name } = payload
   const exists = current[name]
+  const { picks } = payload 
+
+  console.log('* picks', picks);
 
   if (!exists) {
     return {
       ...current,
       [name]: {
         draft: {
-          display: false,
-          items: [],
+          display: true,
+          items: picks[name].items,
         }
       }
     }
