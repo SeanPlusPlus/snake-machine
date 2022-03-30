@@ -24,6 +24,7 @@ const League = () => {
       authenticated
     },
     league,
+    opponents,
     setLeague,
     setSelection,
     setOpponents,
@@ -79,7 +80,13 @@ const League = () => {
 
   const handleDraftExpand = (e) => {
     e.preventDefault()
-    setOpponents({name: e.target.name, display: true, picks: league.picks})
+    const name = e.target.name
+    const opponent = opponents[name] || { draft: {display: false }}
+    const display = !opponent.draft.display
+    
+    console.log('name', name);
+
+    setOpponents({name: e.target.name, display, picks: league.picks})
   }
 
   if (warning) {
@@ -195,10 +202,21 @@ const League = () => {
                       <span className="pr-1">
                         {idx + 1}.
                       </span>
-                      <span className={currentPick(league.draft_order, league.current_pick, user.username) ? 'underline' : ''}>
-                        <a className="link text-sky-500 no-underline"onClick={handleDraftExpand} name={user.username}>
-                          {user.username}
-                        </a>
+                      <span>
+                        <span className={currentPick(league.draft_order, league.current_pick, user.username) ? 'underline' : ''}>
+                          <a className="link text-sky-500 no-underline" onClick={handleDraftExpand} name={user.username}>
+                            {user.username}
+                          </a>
+                        </span>
+                        <ul>
+                          {opponents[user.username] && opponents[user.username].draft.display && (
+                            opponents[user.username].draft.items.map((i) => (
+                              <li key={i.name} className="pl-4 text-xs">
+                                {i.name}
+                              </li>
+                            ))
+                          )}
+                        </ul>
                       </span>
                     </li>
                   ))}

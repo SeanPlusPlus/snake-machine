@@ -3,9 +3,11 @@ import _has from 'lodash/has'
 export const getOpponents = (current, payload) => {
   const { name } = payload
   const exists = current[name]
-  const { picks } = payload 
+  const { picks } = payload || {}
+  const opponent = picks[name]
 
-  console.log('* picks', picks);
+  console.log('name', name);
+  console.log('oppo', opponent);
 
   if (!exists) {
     return {
