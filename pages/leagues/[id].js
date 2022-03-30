@@ -59,7 +59,7 @@ const League = () => {
   }, [username]);
 
   useInterval(() => {
-    if (!authenticated) {
+    if (!username) {
       return
     } else {
       getLeague().then((data) => {
@@ -160,7 +160,7 @@ const League = () => {
                         className={`pt-1 list-none ${myPick(league.draft_order, league.current_pick, username) && !item.drafted && 'hover:bg-sky-700 hover:rounded-md'}`}
                       >
                         <label
-                          className={`label ${myPick(league.draft_order, league.current_pick, username) && !item.drafted && 'cursor-pointer'}`}
+                          className={`label h-[40px] ${myPick(league.draft_order, league.current_pick, username) && !item.drafted && 'cursor-pointer'}`}
                         >
                           <span className={`label-text ${item.drafted && 'line-through'}`}>
                             {item.name}
