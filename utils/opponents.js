@@ -3,6 +3,7 @@ import _has from 'lodash/has'
 export const getOpponents = (current, payload) => {
   const { name } = payload
   const exists = current[name]
+  
   const { picks } = payload || {}
   const opponent = picks[name]
 
