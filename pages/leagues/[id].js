@@ -53,6 +53,7 @@ const League = () => {
     if (username) {
       getLeague().then((data) => {
         setLeague(data.league)
+        setOpponents({names: data.league.picks})
       }).catch((e) => {
         setWarning(e.message)
       })
@@ -68,7 +69,6 @@ const League = () => {
         const client = league.items.filter((i) => i.drafted).length
         if (server !== client) {
           setLeague(data.league)
-          setOpponents(data.league.picks)
         }
       })
     }
