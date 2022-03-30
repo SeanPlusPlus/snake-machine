@@ -122,6 +122,10 @@ export default async function draft(req, res) {
     return
   }
 
+  //
+  // GET league success
+  //
+  
   const method = req.method
   if (method === 'GET') {
     res.status(200).json({
@@ -130,6 +134,10 @@ export default async function draft(req, res) {
     })
     return
   }
+
+  //
+  // PUT league err handling
+  //
 
   if (method !== 'PUT') {
     res.status(405).json({
@@ -142,6 +150,14 @@ export default async function draft(req, res) {
   if (!selected) {
     res.status(400).json({
       message: 'Pass selected'
+    })
+    return
+  }
+
+  const user_is_up = league.draft_order[current_pick.draft_order_idx].username === username
+  if (!user_is_up) {
+    res.status(403).json({
+      message: 'Not your pick dude'
     })
     return
   }
@@ -231,6 +247,10 @@ export default async function draft(req, res) {
     )
   )
 
+  //
+  // PUT league success
+  //
+ 
   res.status(200).json({
     username,
     league: {

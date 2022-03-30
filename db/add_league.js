@@ -64,7 +64,7 @@ async function createLeague({ name, usernames, items }) {
     items: items.map((name) => ({ name })),
     admin,
     current_pick,
-    closed: false,
+    status: 'closed'
   }
 
   const collection = 'leagues'
