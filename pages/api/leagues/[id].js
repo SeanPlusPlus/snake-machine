@@ -2,7 +2,7 @@ import { getLoginSession } from '../../../lib/auth'
 import faunadb from 'faunadb'
 import _find from 'lodash/find'
 import _some from 'lodash/some'
-import { data } from 'autoprefixer'
+import _includes from 'lodash/includes'
 
 require('dotenv').config()
 
@@ -50,19 +50,6 @@ async function getUserRef({ username }) {
   )
 
   return user
-}
-
-async function getUser(id) {
-  const collection = 'users'
-  try {
-    const user = await client.query(
-      Get(Ref(Collection(collection), id))
-    )
-
-    return user 
-  } catch {
-    throw new Error()
-  }
 }
 
 async function getLeague(id) {
@@ -121,6 +108,15 @@ export default async function draft(req, res) {
   } catch {
     res.status(404).json(({
       message: 'League not found'
+    }))
+    return
+  }
+
+  const members = league.draft_order.map((m) => (m.username)).concat(league.admin.username)
+  const is_member = _includes(members, username)
+  if (!is_member) {
+    res.status(404).json(({
+      message: 'Not a member of this league'
     }))
     return
   }
