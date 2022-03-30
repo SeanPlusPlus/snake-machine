@@ -32,7 +32,7 @@ const Drafts = () => {
       <ul className="list-disc text-left text-xl">
         {drafts.map((d, i) => (
           <li key={i} className="pt-1 pb-1">
-            <Link href={`/league/${d.league.id}`}>
+            <Link href={`/leagues/${d.league.id}`}>
               <a className="link link-secondary">
                 {d.league.name}
               </a>

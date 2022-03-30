@@ -23,8 +23,8 @@ const League = () => {
     user: {
       authenticated
     },
-    draft,
-    setDraft,
+    league,
+    setLeague,
     setSelection,
     setOpponents,
   } = useContext(GlobalContext)
@@ -38,7 +38,7 @@ const League = () => {
   const { id } = router.query
   const path = router.asPath
 
-  async function getDraft() {
+  async function getLeague() {
     const res = await fetch(`/api/leagues/${id}`)
     const json = await res.json()
     if (res.status !== 200) {
@@ -50,8 +50,8 @@ const League = () => {
 
   useEffect(() => {
     if (username) {
-      getDraft().then((data) => {
-        setDraft(data)
+      getLeague().then((data) => {
+        setLeague(data.league)
       }).catch((e) => {
         setWarning(e.message)
       })
@@ -62,11 +62,11 @@ const League = () => {
     if (!authenticated) {
       return
     } else {
-      getDraft().then((data) => {
+      getLeague().then((data) => {
         const server = data.league.items.filter((i) => i.drafted).length
-        const client = draft.league.items.filter((i) => i.drafted).length
+        const client = league.items.filter((i) => i.drafted).length
         if (server !== client) {
-          setDraft(data)
+          setLeague(data.league)
         }
       })
     }
@@ -127,10 +127,10 @@ const League = () => {
   return (
     username ? (
       <Layout>
-        {!draft && <Fetching />}
-        {draft && (
+        {!league && <Fetching />}
+        {league && (
           <>
-            <h1 className="text-4xl text-left bottom-2 border-b-2 border-indigo-500">{draft.league.name}</h1>
+            <h1 className="text-4xl text-left bottom-2 border-b-2 border-indigo-500">{league.name}</h1>
 
             <div className="w-[340px] lg:grid lg:grid-cols-3 lg:gap-3 lg:w-[1000px]">
  
@@ -139,7 +139,7 @@ const League = () => {
                 <h4 className="text-2xl text-left">My Draft</h4>
                 <div className="divider mb-0 mt-1" />
                 <ul className="list-disc text-left text-md">
-                  {draft.draft.items.map((item, idx) => (
+                  {league.picks[username] && league.picks[username].items.map((item, idx) => (
                     <li key={idx} className="pt-1">
                       {item.name}
                     </li>
@@ -154,18 +154,18 @@ const League = () => {
                 <div className="divider mb-0 mt-1" />
                 <div className="form-control">
                   <ul className="list-disc text-left text-md">
-                    {draft.league.items.map((item, idx) => (
+                    {league.items.map((item, idx) => (
                       <li
                         key={idx}
-                        className={`pt-1 list-none ${myPick(draft.league.draft_order, draft.league.current_pick, username) && !item.drafted && 'hover:bg-sky-700 hover:rounded-md'}`}
+                        className={`pt-1 list-none ${myPick(league.draft_order, league.current_pick, username) && !item.drafted && 'hover:bg-sky-700 hover:rounded-md'}`}
                       >
                         <label
-                          className={`label ${myPick(draft.league.draft_order, draft.league.current_pick, username) && !item.drafted && 'cursor-pointer'}`}
+                          className={`label ${myPick(league.draft_order, league.current_pick, username) && !item.drafted && 'cursor-pointer'}`}
                         >
                           <span className={`label-text ${item.drafted && 'line-through'}`}>
                             {item.name}
                           </span> 
-                          {!item.drafted && myPick(draft.league.draft_order, draft.league.current_pick, username) && (
+                          {!item.drafted && myPick(league.draft_order, league.current_pick, username) && (
                             <input
                               name={item.name}
                               onChange={handleChange}
@@ -187,16 +187,16 @@ const League = () => {
                 <h4 className="text-2xl text-left">Draft Order</h4>
                 <div className="divider mb-0 mt-1" />
                 <ul className="list-disc text-left text-md">
-                  {draft.league.draft_order.map((user, idx) => (
+                  {league.draft_order.map((user, idx) => (
                     <li
                       key={idx}
-                      className={`pt-1 ${currentPick(draft.league.draft_order, draft.league.current_pick, user.username) !== user.username && 'list-none'}`}
+                      className={`pt-1 ${currentPick(league.draft_order, league.current_pick, user.username) !== user.username && 'list-none'}`}
                     >
                     
                       <span className="pr-1">
                         {idx + 1}.
                       </span>
-                      <span className={currentPick(draft.league.draft_order, draft.league.current_pick, user.username) ? 'underline' : ''}>
+                      <span className={currentPick(league.draft_order, league.current_pick, user.username) ? 'underline' : ''}>
                         <a className="link text-sky-500 no-underline"onClick={handleDraftExpand} name={user.username}>
                           {user.username}
                         </a>
