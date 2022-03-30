@@ -83,8 +83,6 @@ const League = () => {
     const name = e.target.name
     const opponent = opponents[name] || { draft: {display: false }}
     const display = !opponent.draft.display
-    
-    console.log('name', name);
 
     setOpponents({name: e.target.name, display, picks: league.picks})
   }
