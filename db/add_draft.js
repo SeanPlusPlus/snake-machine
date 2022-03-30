@@ -100,7 +100,6 @@ async function createDraft({ name, username }) {
         data: {
           userRef: user.ref,
           leagueRef: league.ref,
-          items: [],
         }
       }
     )
@@ -114,15 +113,15 @@ async function createDraft({ name, username }) {
 const name = 'The Masters 2022'
 const drafts = [
   {
-    username: 'sean',
-    name,
-  },
-  {
     username: 'alice',
     name,
   },
   {
     username: 'bob',
+    name,
+  },
+  {
+    username: 'carlos',
     name,
   },
 ]

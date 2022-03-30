@@ -50,23 +50,7 @@ async function findUser({ username }) {
 }
 
 async function createLeague({ name, usernames, items }) {
-  const userLookups = usernames.map((user) => (findUser({ username: user.name })))
-  const users = []
-  for (const lookup of userLookups) {
-    const result = await lookup 
-    users.push(result)
-  }
-
-  const userRefs = users.map((user) => ({
-    name: user.data.username,
-    userRef: user.ref,
-  }))
-
-  const draft_order = usernames.map((u) => (
-    _find(userRefs, {name: u.name}).userRef
-  ))
-
-  const admin = await findUser({ username: 'sean' })
+  const admin = { username: 'alice' }
 
   const current_pick = {
     draft_order_idx: 0,
@@ -75,10 +59,10 @@ async function createLeague({ name, usernames, items }) {
 
   const league = {
     name,
-    draft_order,
+    draft_order: usernames,
     picks: {},
     items: items.map((name) => ({ name })),
-    admin: admin.ref.id,
+    admin,
     current_pick,
     closed: false,
   }
@@ -97,17 +81,19 @@ async function createLeague({ name, usernames, items }) {
 }
 
 const name = 'The Masters 2022'
+
 const usernames = [
   {
-    name: 'sean',
+    username: 'alice',
   },
   {
-    name: 'alice',
+    username: 'bob',
   },
   {
-    name: 'bob',
+    username: 'carlos',
   },
 ]
+
 const items = [
   'Fred Couples',
   'Sergio Garcia',

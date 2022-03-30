@@ -20,10 +20,10 @@ export default (state, action) => {
         ...state,
         leagues: action.payload,
       }
-    case 'UPDATE_DRAFT':
+    case 'UPDATE_LEAGUE':
       return {
         ...state,
-        draft: action.payload,
+        league: action.payload,
       }
     case 'UPDATE_SELECTION':
       return {

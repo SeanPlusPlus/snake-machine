@@ -9,7 +9,7 @@ import { log } from '../utils/logger'
 const initialState = {
   user: { authenticated: null },
   drafts: null,
-  draft: null,
+  league: null,
   leagues: null,
   selection: null,
   opponents: {},
@@ -38,9 +38,9 @@ export const GlobalProvider = ({
     });
   }
 
-  function setDraft(data) {
+  function setLeague(data) {
     dispatch({
-      type: 'UPDATE_DRAFT',
+      type: 'UPDATE_LEAGUE',
       payload: data 
     });
   }
@@ -76,8 +76,8 @@ export const GlobalProvider = ({
         setUser,
         drafts: state.drafts,
         setDrafts,
-        draft: state.draft,
-        setDraft,
+        league: state.league,
+        setLeague,
         leagues: state.leagues,
         setLeagues,
         selection: state.selection,

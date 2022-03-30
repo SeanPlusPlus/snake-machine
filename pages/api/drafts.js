@@ -90,27 +90,9 @@ async function getLeague(id) {
       Get(Ref(Collection(collection), id))
     )
 
-    const { ref, data: { name, items, draft_order }} = league
+    const { ref, data: { name, items, draft_order, picks, admin }} = league
 
-    // draft_order.forEach((d) => console.log(d.value.id))
-
-
-    const userLookups = draft_order.map((d) => (getUser(d.value.id)))
-    const users = []
-    for (const lookup of userLookups) {
-      const result = await lookup
-      users.push(result)
-    }
-
-    const draft_user_order = draft_order.map((u) => {
-      const { value: { id }} = u
-      const { data: { username }} = _find(users, (user) => user.ref.id === id)
-      return {
-        username
-      }
-    })
-
-    return { id:ref.id, draft_order: draft_user_order, name, items }
+    return { id:ref.id, draft_order, name, items, picks, admin }
   } catch {
     throw new Error()
   }
@@ -157,9 +139,12 @@ export default async function drafts(req, res) {
       const league = _find(leagues, (l) => l.id === el.data.leagueRef.id)
       return {
         id: el.ref.id,
-        items: el.data.items,
         league: {
+          id: league.id,
+          picks: league.picks,
           name: league.name,
+          draft_order: league.draft_order,
+          admin: league.admin,
         }
       }
     })
