@@ -9,7 +9,6 @@ import Layout from '../../components/layout'
 import Warning from '../../components/warning'
 import Selection from '../../components/selection'
 import Fetching from '../../components/fetching'
-import { log } from '../../utils/logger'
 
 const myPick = (draft_order, current_pick, username) => {
   return draft_order[current_pick.draft_order_idx].username === username
@@ -19,7 +18,7 @@ const currentPick = (draft_order, current_pick, username) => {
   return draft_order[current_pick.draft_order_idx].username === username
 }
 
-const Draft = () => {
+const League = () => {
   const {
     user: {
       authenticated
@@ -220,4 +219,4 @@ const Draft = () => {
   )
 }
 
-export default Draft
+export default League

@@ -52,19 +52,6 @@ async function getUserRef({ username }) {
   return user
 }
 
-async function getDraft(id) {
-  const collection = 'drafts'
-  try {
-    const draft = await client.query(
-      Get(Ref(Collection(collection), id))
-    )
-
-    return draft
-  } catch {
-    throw new Error()
-  }
-}
-
 async function getUser(id) {
   const collection = 'users'
   try {
@@ -79,38 +66,20 @@ async function getUser(id) {
 }
 
 async function getLeague(id) {
-  const collection = 'leagues'
   try {
     const league = await client.query(
-      Get(Ref(Collection(collection), id))
+      Get(Ref(Collection('leagues'), id))
     )
 
     const { ref, data: { name, items, draft_order, current_pick, admin, picks }} = league
-    const userLookups = draft_order.map((d) => (getUser(d.value.id)))
-    const users = []
-    for (const lookup of userLookups) {
-      const result = await lookup
-      users.push(result)
-    }
-
-    const draft_user_order = draft_order.map((u) => {
-      const { value: { id }} = u
-      const { data: { username }} = _find(users, (user) => user.ref.id === id)
-      return {
-        username
-      }
-    })
-
-    const admin_user = await getUser(admin)
-    const admin_user_name = { username: admin_user.data.username }
 
     return {
       id:ref.id,
-      draft_order: draft_user_order,
+      draft_order,
       name,
       items,
       current_pick,
-      admin: admin_user_name,
+      admin,
       picks,
     }
   } catch {
@@ -146,164 +115,19 @@ export default async function draft(req, res) {
     query: { id },
   } = req
 
-  let draft
+  let league 
   try {
-
-    // TODO get league
-    draft = await getDraft(id)
+    league = await getLeague(id)
   } catch {
     res.status(404).json(({
-      message: 'Draft not found'
+      message: 'League not found'
     }))
     return
   }
 
-  const { data: {items, name} } = draft
-  const user_ref = user.ref.id
-  const draft_user_ref = draft.data.userRef.value.id
-
-  const league_id = draft.data.leagueRef.id
-  const league = await getLeague(league_id)
-  
-  const method = req.method
-  const selected = method === 'PUT' ? (req.body) : undefined
-
-  if (selected) {
-    
-    // only you can update your draft
-    if (user_ref !== draft_user_ref) {
-      res.status(403).json({
-        message: 'Not your draft'
-      })
-      return
-    }
-    
-    const draft_updated = {
-      ...data,
-      items: [...items, selected]
-    }
-
-    const collection = 'drafts'
-    const updated_draft = await client.query(
-      Update(
-        Ref(Collection(collection), id),
-        { data: draft_updated },
-      )
-    )
-
-    const league_to_update = await client.query(
-      Get(Ref(Collection('leagues'), league.id))
-    )
-
-    // calculate current pick
-    let updated_direction = null
-    let updated_draft_order_idx = null
-
-    const previous_draft_order_idx = league_to_update.data.current_pick.draft_order_idx
-    const previous_direction = league_to_update.data.current_pick.direction
-
-    if (previous_direction === 'Right') {
-      updated_draft_order_idx = previous_draft_order_idx + 1
-
-      // are we at the end of the array
-      if ((updated_draft_order_idx + 1) === league_to_update.data.draft_order.length) {
-        updated_direction = 'Hold'
-      } else {
-        updated_direction = 'Right'
-      }
-    } else if (previous_direction === 'Left') {
-      updated_draft_order_idx = previous_draft_order_idx - 1
-
-      // are we at the start of the array
-      if (updated_draft_order_idx === 0) {
-        updated_direction = 'Hold'
-      } else {
-        updated_direction = 'Left'
-      }
-    } else { // Hold
-      updated_draft_order_idx = previous_draft_order_idx
-
-      // are we at the start of the array
-      if (updated_draft_order_idx === 0) {
-        updated_direction = 'Right'
-      } else {
-        updated_direction = 'Left'
-      }
-    }
-
-    const current_pick = {
-      draft_order_idx: updated_draft_order_idx,
-      direction: updated_direction,
-    }
-
-    const getPicks = (picks, username, selected) => {
-      if (!picks[username]) {
-        return {
-          ...picks,
-          [username]: {
-            items: [{name: selected}]
-          }
-        }
-      }
-      return {
-        ...picks,
-        [username]: {
-          items: [...picks[username].items, {name: selected}]
-        }
-      }
-    }
-
-    const picks = getPicks(league_to_update.data.picks, username, selected) 
-
-    const league_updated = {
-      ...league_to_update.data,
-      current_pick,
-      items: league_to_update.data.items.map((i) => {
-        if (i.name === selected.name)  {
-          return {
-            ...i,
-            drafted: true,
-          }
-        }
-        return i
-      }),
-      picks,
-    }
-
-    const updated_league = await client.query(
-      Update(
-        Ref(Collection('leagues'), league.id),
-        { data: league_updated },
-      )
-    )
-    
-    res.status(200).json({
-      username,
-      draft: { items: updated_draft.data.items, name },
-      league: {
-        ...league,
-        items: updated_league.data.items,
-        current_pick: updated_league.data.current_pick,
-        picks: updated_league.data.picks,
-      },
-      selected,
-    })
-    return
-  } else {
-
-    // you can only see drafts if you are in the league
-    const my_league = _some(league.draft_order, { username })
-    if (!my_league) {
-      res.status(403).json({
-        message: 'Not your draft'
-      })
-      return
-    } else {
-      res.status(200).json({
-        username,
-        draft: { items, name },
-        league,
-      })
-    }
-  }
+  res.status(200).json({
+    username,
+    league,
+  })
+  return
 }
