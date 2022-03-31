@@ -162,6 +162,14 @@ export default async function draft(req, res) {
     return
   }
 
+  const { status } = league
+  if (status === 'closed') {
+    res.status(403).json({
+      message: 'Draft is closed'
+    })
+    return
+  }
+
   //
   // handle snake 
   //

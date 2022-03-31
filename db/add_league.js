@@ -80,19 +80,15 @@ async function createLeague({ name, usernames, items }) {
   }
 }
 
-const name = 'The Masters 2022'
+const name = 'Glofers Test'
 
-const usernames = [
-  {
-    username: 'alice',
-  },
-  {
-    username: 'bob',
-  },
-  {
-    username: 'carlos',
-  },
+const names = [
+  'alice',
+  'bob',
+  'carlos'
 ]
+
+const usernames = names.map((name) => ({ username: name }))
 
 const items = [
   'Fred Couples',
