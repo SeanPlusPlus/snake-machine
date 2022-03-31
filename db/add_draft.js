@@ -110,21 +110,15 @@ async function createDraft({ name, username }) {
   }
 }
 
-const name = 'The Masters 2022'
-const drafts = [
-  {
-    username: 'alice',
-    name,
-  },
-  {
-    username: 'bob',
-    name,
-  },
-  {
-    username: 'carlos',
-    name,
-  },
+const name = 'Glofers Test'
+
+const usernames = [
+  'alice',
+  'bob',
+  'carlos'
 ]
+
+const drafts = usernames.map((username) => ({ username: username, name: name }))
 
 drafts.forEach((draft) => {
   createDraft(draft).then((res) => {
