@@ -141,7 +141,16 @@ const League = () => {
 
         {league && (
           <>
-            <h1 className="text-4xl text-left bottom-2 border-b-2 border-indigo-500">{league.name}</h1>
+            <h1 className="text-3xl text-left bottom-2 border-b-2 border-sky-500 flex">
+              <div>
+                {league.name}
+              </div>
+              {myPick(league.draft_order, league.current_pick, username) && (
+                <div className="badge badge-warning gap-2 mt-2 ml-auto">
+                  Your Pick
+                </div>
+              )}
+            </h1>
 
             <div className="w-[340px] lg:grid lg:grid-cols-3 lg:gap-3 lg:w-[1000px]">
  
