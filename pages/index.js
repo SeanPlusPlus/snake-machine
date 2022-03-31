@@ -43,7 +43,7 @@ const Home = () => {
     <Layout>
       {username && (
         <>
-          <h1 className="text-4xl text-left bottom-2 border-b-2 border-indigo-500">My Drafts</h1>
+          <h1 className="text-4xl text-left bottom-2 border-b-2 border-sky-500">My Drafts</h1>
           <div className="card bg-base-100 shadow-xl mt-4">
             <div className="card-body w-[340px]">
               <Drafts />
