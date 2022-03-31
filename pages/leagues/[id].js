@@ -161,7 +161,11 @@ const League = () => {
 
             <div className="card bg-base-100 shadow-xl mt-4">
               <div className="card-body">
-                <h4 className="text-2xl text-left">Items</h4>
+                <h4 className="text-2xl text-left flex">
+                  <div className="title">
+                    Items
+                  </div>
+                </h4>
                 <div className="divider mb-0 mt-1" />
                 <div className="form-control">
                   <ul className="list-disc text-left text-md">

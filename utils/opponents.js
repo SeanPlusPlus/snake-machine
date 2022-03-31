@@ -64,7 +64,8 @@ export const getOpponents = (current, payload) => {
     console.log(current[name]);
 
     keys.forEach((name) => {
-      const display = current[name] && current[name].draft.display
+      const draft_display = current[name] && current[name].draft.display
+      const display = draft_display === undefined ? true : draft_display
       obj[name] = {
         draft: {
           display,
