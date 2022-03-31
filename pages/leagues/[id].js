@@ -218,10 +218,11 @@ const League = () => {
                       key={idx}
                       className={`pt-1 ${currentPick(league.status, league.draft_order, league.current_pick, user.username) ? 'list-disc' : 'list-none'}`}
                     >
-                    
-                      <span className="pr-1">
-                        {idx + 1}.
-                      </span>
+                      {league.status === 'open' && (
+                        <span className="pr-1">
+                          {idx + 1}.
+                        </span>
+                      )}
                       <span>
                         <span>
                           <a className="link text-sky-500 no-underline" onClick={handleDraftExpand} name={user.username}>
