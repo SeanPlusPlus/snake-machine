@@ -69,6 +69,7 @@ const League = () => {
         const client = league.items.filter((i) => i.drafted).length
         if (server !== client) {
           setLeague(data.league)
+          setOpponents({picks: data.league.picks})
         }
       })
     }

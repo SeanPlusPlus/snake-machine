@@ -2,13 +2,13 @@ import _has from 'lodash/has'
 import _keys from 'lodash/keys'
 
 export const getOpponents = (current, payload) => {
-  const { name, names } = payload
+  const { name, names, picks } = payload
 
   // update single
   if (name) {
     const exists = current[name]
     const { picks } = payload || {}
-    const opponent = picks[name]
+    const opponent = picks[name] || { items: [] }
 
     if (!exists) {
       return {
@@ -23,7 +23,6 @@ export const getOpponents = (current, payload) => {
     }
 
     const obj = current[name]
-
     if (_has(payload, 'display')) {
       const { display } = payload
       return {
@@ -39,7 +38,7 @@ export const getOpponents = (current, payload) => {
     return current
   }
 
-  // batch names
+  // update on inital data fetch
   if (names) {
     const keys = _keys(names)
     const obj = {}
@@ -49,6 +48,27 @@ export const getOpponents = (current, payload) => {
         draft: {
           display: true,
           items: names[name].items
+        }
+      }
+    })
+
+    return obj
+  }
+
+  // update on picks http poll
+  if (picks) {
+    const keys = _keys(picks)
+    const obj = {}
+
+    console.log(current);
+    console.log(current[name]);
+
+    keys.forEach((name) => {
+      const display = current[name] && current[name].draft.display
+      obj[name] = {
+        draft: {
+          display,
+          items: picks[name].items
         }
       }
     })
