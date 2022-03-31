@@ -196,14 +196,14 @@ const League = () => {
                   {league.draft_order.map((user, idx) => (
                     <li
                       key={idx}
-                      className={`pt-1 ${currentPick(league.draft_order, league.current_pick, user.username) !== user.username && 'list-none'}`}
+                      className={`pt-1 ${currentPick(league.draft_order, league.current_pick, user.username) ? 'list-disc' : 'list-none'}`}
                     >
                     
                       <span className="pr-1">
                         {idx + 1}.
                       </span>
                       <span>
-                        <span className={currentPick(league.draft_order, league.current_pick, user.username) ? 'underline' : ''}>
+                        <span>
                           <a className="link text-sky-500 no-underline" onClick={handleDraftExpand} name={user.username}>
                             {user.username}
                           </a>
