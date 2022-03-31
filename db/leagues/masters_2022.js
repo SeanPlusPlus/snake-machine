@@ -169,6 +169,7 @@ async function createDraft({ name, username }) {
 
 const name = 'Masters 2022'
 
+// TODO:
 const names = [
   'alice',
   'bob',
@@ -177,6 +178,7 @@ const names = [
 
 const usernames = names.map((name) => ({ username: name }))
 
+// TODO:
 const items = [
   'Fred Couples',
   'Sergio Garcia',
