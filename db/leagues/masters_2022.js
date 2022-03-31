@@ -194,7 +194,7 @@ const items = [
 createLeague({name, usernames, items}).then((data) => {
   console.log(data);
 
-  const drafts = usernames.map((username) => ({ username: username, name: name }))
+  const drafts = names.map((username) => ({ username: username, name: name }))
 
   drafts.forEach((draft) => {
     createDraft(draft).then((res) => {
