@@ -9,6 +9,7 @@ const Selection = () => {
     selection,
     setSelection,
     setLeague,
+    setOpponents,
   } = useContext(GlobalContext)
 
   const handleClose = () => {
@@ -29,6 +30,7 @@ const Selection = () => {
     const res = await fetch(`/api/leagues/${id}`, options)
     const json = await res.json()
     setLeague(json.league)
+    setOpponents({picks: json.league.picks})
     setSubmitting(false)
     setSelection(null) 
   }
