@@ -14,7 +14,11 @@ const myPick = (draft_order, current_pick, username) => {
   return draft_order[current_pick.draft_order_idx].username === username
 }
 
-const currentPick = (draft_order, current_pick, username) => {
+const currentPick = (status, draft_order, current_pick, username) => {
+  if (status === 'closed') {
+    return false
+  }
+ 
   return draft_order[current_pick.draft_order_idx].username === username
 }
 
@@ -134,6 +138,7 @@ const League = () => {
     username ? (
       <Layout>
         {!league && <Fetching />}
+
         {league && (
           <>
             <h1 className="text-4xl text-left bottom-2 border-b-2 border-indigo-500">{league.name}</h1>
@@ -190,13 +195,15 @@ const League = () => {
 
             <div className="card bg-base-100 shadow-xl mt-4">
               <div className="card-body">
-                <h4 className="text-2xl text-left">Draft Order</h4>
+                <h4 className="text-2xl text-left">
+                  Draft Order
+                </h4>
                 <div className="divider mb-0 mt-1" />
                 <ul className="list-disc text-left text-md">
                   {league.draft_order.map((user, idx) => (
                     <li
                       key={idx}
-                      className={`pt-1 ${currentPick(league.draft_order, league.current_pick, user.username) ? 'list-disc' : 'list-none'}`}
+                      className={`pt-1 ${currentPick(league.status, league.draft_order, league.current_pick, user.username) ? 'list-disc' : 'list-none'}`}
                     >
                     
                       <span className="pr-1">
