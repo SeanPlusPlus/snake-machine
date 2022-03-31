@@ -26,7 +26,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
           <label className="label">
             <span className="label-text">Password</span>
           </label>
-          <input name="password" type="text" className="input input-bordered w-full max-w-xs" autoCorrect="off" autoCapitalize="none" spellCheck="false" />
+          <input name="password" type="password" className="input input-bordered w-full max-w-xs" autoCorrect="off" autoCapitalize="none" spellCheck="false" />
         </div>
 
         {!isLogin && (
@@ -34,7 +34,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
             <label className="label">
               <span className="label-text">Re-enter Password</span>
             </label>
-            <input name="rpassword" type="text" className="input input-bordered w-full max-w-xs" autoCorrect="off" autoCapitalize="none" spellCheck="false" />
+            <input name="rpassword" type="password" className="input input-bordered w-full max-w-xs" autoCorrect="off" autoCapitalize="none" spellCheck="false" />
           </div>
         )}
 
