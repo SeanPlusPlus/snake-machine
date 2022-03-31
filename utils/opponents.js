@@ -1,4 +1,5 @@
 import _has from 'lodash/has'
+import _keys from 'lodash/keys'
 
 export const getOpponents = (current, payload) => {
   const { name, names } = payload
@@ -38,6 +39,22 @@ export const getOpponents = (current, payload) => {
     return current
   }
 
-  console.log('* names', names);
+  // batch names
+  if (names) {
+    const keys = _keys(names)
+    const obj = {}
+
+    keys.forEach((name) => {
+      obj[name] = {
+        draft: {
+          display: true,
+          items: names[name].items
+        }
+      }
+    })
+
+    return obj
+  }
+  
   return current
 }
