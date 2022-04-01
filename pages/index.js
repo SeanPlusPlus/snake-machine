@@ -43,12 +43,6 @@ const Home = () => {
     <Layout>
       {username && (
         <>
-          <Link href="/league/create">
-            <a className="btn btn-secondary shadow-lg mb-6 w-[340px]">
-              Setup a new league
-            </a>
-          </Link>
-
           <h1 className="text-4xl text-left bottom-2 border-b-2 border-sky-500">My Leagues</h1>
           <div className="card bg-base-100 shadow-xl mt-4">
             <div className="card-body w-[340px]">
