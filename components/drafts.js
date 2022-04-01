@@ -37,6 +37,9 @@ const Drafts = () => {
                 {d.league.name}
               </a>
             </Link>
+            {d.league.admin.username === username && (
+              <div className="badge badge-info gap-2 ml-2">admin</div>
+            )}
             <ul className="list-disc text-left ml-4 text-sm">
               {d.league.picks[username] && d.league.picks[username].items.map((item, idx) => (
                 <li key={idx} className="pt-1">
