@@ -45,7 +45,7 @@ const Home = () => {
         <>
           <Link href="/league/create">
             <a className="btn btn-secondary shadow-lg mb-6 w-[340px]">
-            Setup a new league
+              Setup a new league
             </a>
           </Link>
 
