@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import _shuffle from 'lodash/shuffle'
 import Layout from "../../components/layout"
 import Fetching from '../../components/fetching'
 
 const LeagueCreate = () => {
   const [ submitting, setSubmitting ] = useState(null)
   const [ league, setLeague ] = useState({})
+  const [ rand, setRand ] = useState(false)
   const [ modal, setModal ] = useState('')
   const [ values, setValues ] = useState({
     league_name: '',
@@ -41,7 +43,11 @@ const LeagueCreate = () => {
   }
 
   const randomize = () => {
-    console.log(league);
+    setLeague({
+      ...league,
+      members: _shuffle(league.members)
+    })
+    setRand(true)
   }
   
   const handleSubmit = async (e) => {
@@ -124,17 +130,21 @@ const LeagueCreate = () => {
                 </li>
               ))}
             </ul>
-            <div
-              className="mt-1 link text-sky-500 hover:cursor-pointer hover:text-sky-600 flex text-md"
-              onClick={randomize}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              <span className="pl-1">
-                Randomize
-              </span>
-            </div>
+
+            {!rand && (
+              <div
+                className="mt-1 link text-sky-500 hover:cursor-pointer hover:text-sky-600 flex text-md"
+                onClick={randomize}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span className="pl-1">
+                  Randomize
+                </span>
+              </div>
+            )}
+
           </div>
 
           <div className="text-left pt-7">
@@ -143,19 +153,18 @@ const LeagueCreate = () => {
             </span>
             <ul className="pl-4">
               {league.items && league.items.map((i) => (
-                <li key={i} className="list-decimal text-sm">
+                <li key={i} className="list-disc text-sm">
                   {i}
                 </li>
               ))}
             </ul>
           </div>
 
-
           <div className="modal-action pt-5">
             {submitting ? (
-                <div className="border-2 rounded-md pl-8 pr-8 pt-2 pb-1">
-                  <Fetching />
-                </div>
+              <div className="border-2 rounded-md pl-8 pr-8 pt-2 pb-1">
+                <Fetching />
+              </div>
             ) : (
               <>
                 <label htmlFor="my-modal" className="btn" onClick={handleCancel}>Cancel</label>
