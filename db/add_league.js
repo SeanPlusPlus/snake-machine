@@ -14,12 +14,6 @@ const client = new faunadb.Client({
 
 const {
   Collection,
-  Ref,
-  Get,
-  Select,
-  Paginate,
-  Match,
-  Index,
   Create,
 } = q
 
