@@ -16,7 +16,6 @@ const {
   Match,
   Index,
   Select,
-  Update,
 } = q
 
 const client = new faunadb.Client({
@@ -76,29 +75,6 @@ async function findUser({ username }) {
   )
 
   return user
-}
-
-async function getLeague(id) {
-  try {
-    const league = await client.query(
-      Get(Ref(Collection('leagues'), id))
-    )
-
-    const { ref, data: { name, items, draft_order, current_pick, admin, picks, status }} = league
-
-    return {
-      id:ref.id,
-      draft_order,
-      name,
-      items,
-      current_pick,
-      admin,
-      picks,
-      status,
-    }
-  } catch {
-    throw new Error()
-  }
 }
 
 export default async function create(req, res) {
