@@ -43,7 +43,16 @@ const Home = () => {
     <Layout>
       {username && (
         <>
-          <h1 className="text-4xl text-left bottom-2 border-b-2 border-sky-500">My Leagues</h1>
+          <h1 className="text-3xl text-left bottom-2 border-b-2 border-sky-500 flex">
+            Leagues
+            <Link href="/league/create">
+              <a className="badge badge-secondary badge-lg gap-2 mt-2 ml-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </a>
+            </Link>
+          </h1>
           <div className="card bg-base-100 shadow-xl mt-4">
             <div className="card-body w-[340px]">
               <Drafts />

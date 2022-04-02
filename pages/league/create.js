@@ -4,7 +4,7 @@ import Layout from "../../components/layout"
 const LeagueCreate = () => {
   const [values, setValues] = useState({
     league_name: '',
-    draft_order: '',
+    members: '',
     items: '',
   })
   
@@ -16,11 +16,11 @@ const LeagueCreate = () => {
     }))
   }
 
-  const handleDraftOrder = (e) => {
+  const handleMembers = (e) => {
     e.persist()
     setValues((values) => ({
       ...values,
-      draft_order: e.target.value,
+      members: e.target.value,
     }))
   }
 
@@ -34,7 +34,13 @@ const LeagueCreate = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(values)
+    const { league_name, members, items } = values
+    const league = {
+      name: league_name,
+      members: members.split('\n'),
+      items: items.split('\n'),
+    }
+    console.log(league);
   }
 
   return (
@@ -52,9 +58,9 @@ const LeagueCreate = () => {
 
           <div className="form-control w-full max-w-xs pt-7">
             <label className="label">
-              <span className="label-text">Draft Order</span>
+              <span className="label-text">Members</span>
             </label>
-            <textarea name="draft_order" value={values.draft_order} onChange={handleDraftOrder} className="textarea textarea-bordered" spellCheck="false"></textarea>
+            <textarea name="draft_order" value={values.members} onChange={handleMembers} className="textarea textarea-bordered" spellCheck="false"></textarea>
             <label className="label">
               <span className="label-text-alt">Separate each username with a newline</span>
             </label>

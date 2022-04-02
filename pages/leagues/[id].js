@@ -146,7 +146,7 @@ const League = () => {
                 {league.name}
               </div>
               {myPick(league.draft_order, league.current_pick, username) && (
-                <div className="badge badge-warning gap-2 mt-2 ml-auto">
+                <div className="badge badge-warning badge-lg gap-2 mt-2 ml-auto">
                   Your Pick
                 </div>
               )}
