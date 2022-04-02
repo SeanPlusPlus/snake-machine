@@ -2,9 +2,11 @@ import { useState } from 'react'
 import _shuffle from 'lodash/shuffle'
 import Layout from "../../components/layout"
 import Fetching from '../../components/fetching'
+import Warning from '../../components/warning'
 
 const LeagueCreate = () => {
   const [ submitting, setSubmitting ] = useState(null)
+  const [ warning, setWarning ] = useState(null)
   const [ league, setLeague ] = useState({})
   const [ rand, setRand ] = useState(false)
   const [ modal, setModal ] = useState('')
@@ -19,7 +21,6 @@ const LeagueCreate = () => {
   }
   
   const handleLeagueName = (e) => {
-    e.persist()
     setValues((values) => ({
       ...values,
       league_name: e.target.value,
@@ -27,7 +28,7 @@ const LeagueCreate = () => {
   }
 
   const handleMembers = (e) => {
-    e.persist()
+    setWarning(false)
     setValues((values) => ({
       ...values,
       members: e.target.value,
@@ -35,7 +36,6 @@ const LeagueCreate = () => {
   }
 
   const handleItems = (e) => {
-    e.persist()
     setValues((values) => ({
       ...values,
       items: e.target.value,
@@ -63,20 +63,34 @@ const LeagueCreate = () => {
 
   const handleConfirm = async () => {
     setSubmitting(true)
+    setRand(false)
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ league })
+      body: JSON.stringify(league)
     }
     const res = await fetch(`/api/league/create`, options)
     const json = await res.json()
-    console.log('*', json);
+    
+    if (res.status !== 200) {
+      setSubmitting(false)
+      setWarning(json.message)
+      setModal('')
+      return
+    } else { // success
+      console.log('*', json);
+    }
   }
 
   return (
     <Layout>
       <div className="w-[340px]">
         <h1 className="text-4xl text-left bottom-2 border-b-2 border-sky-500">New League</h1>
+        {warning && (
+          <div className="mt-4">
+            <Warning message={warning} />
+          </div>
+        )}
         <div className="form">
 
           <div className="form-control w-full max-w-xs pt-7">

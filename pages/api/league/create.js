@@ -52,6 +52,32 @@ async function getUserRef({ username }) {
   return user
 }
 
+async function findUser({ username }) {
+  const index = 'users_by_username'
+  const item = await client.query(
+    Select([0],
+      Paginate(
+        Match(
+          Index(index),
+          username
+        )
+      )
+    )
+  )
+  const ref = item[1].value.id
+  const collection = 'users'
+  const user = await client.query(
+    Get(
+      Ref(
+        Collection(collection),
+        ref
+      )
+    )
+  )
+
+  return user
+}
+
 async function getLeague(id) {
   try {
     const league = await client.query(
@@ -109,7 +135,24 @@ export default async function create(req, res) {
   }
 
   const league = req.body
+  const { members } = league
+
+  const userLookups = members.map((m) => (findUser({username: m})))
+  const draft_order = []
+  try {
+    for (const lookup of userLookups) {
+      const result = await lookup
+      draft_order.push(result)
+    }
+  } catch (e) {
+    res.status(400).json({
+      message: 'One or more of your member usernames does not exist'
+    })
+    return
+  }
+
   res.status(200).json({
+    draft_order,
     username,
     league,
   })
