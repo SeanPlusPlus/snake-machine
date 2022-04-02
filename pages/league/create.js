@@ -32,7 +32,7 @@ const LeagueCreate = () => {
     }))
   }
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const { league_name, members, items } = values
     const league = {
@@ -40,7 +40,14 @@ const LeagueCreate = () => {
       members: members.split('\n'),
       items: items.split('\n'),
     }
-    console.log(league);
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ league })
+    }
+    const res = await fetch(`/api/league/create`, options)
+    const json = await res.json()
+    console.log('*', json);
   }
 
   return (

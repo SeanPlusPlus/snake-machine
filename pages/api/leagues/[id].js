@@ -75,7 +75,7 @@ async function getLeague(id) {
   }
 }
 
-export default async function draft(req, res) {
+export default async function league(req, res) {
   const session = await getLoginSession(req)
   if (!session) {
     res.status(401).json({
