@@ -48,7 +48,7 @@ async function createLeague({ name, usernames, items }) {
   }
 }
 
-const name = 'Glofers Test'
+const name = 'Golfers Test'
 
 const names = [
   'alice',
