@@ -181,7 +181,7 @@ const League = () => {
                     {league.items.map((item, idx) => (
                       <li
                         key={idx}
-                        className={`pt-1 list-none ${myPick(league.draft_order, league.current_pick, username) && !item.drafted && 'hover:bg-sky-700 hover:rounded-md'}`}
+                        className={`pt-1 list-none ${myPick(league.draft_order, league.current_pick, username) && !item.drafted && 'hover:bg-sky-700 lg:hover:rounded-md'}`}
                       >
                         <label
                           className={`label h-[40px] ${myPick(league.draft_order, league.current_pick, username) && !item.drafted && 'cursor-pointer'}`}
