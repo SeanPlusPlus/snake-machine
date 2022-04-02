@@ -23,32 +23,6 @@ const {
   Create,
 } = q
 
-async function findUser({ username }) {
-  const index = 'users_by_username'
-  const item = await client.query(
-    Select([0],
-      Paginate(
-        Match(
-          Index(index),
-          username
-        )
-      )
-    )
-  )
-  const ref = item[1].value.id
-  const collection = 'users'
-  const user = await client.query(
-    Get(
-      Ref(
-        Collection(collection),
-        ref
-      )
-    )
-  )
-
-  return user
-}
-
 async function createLeague({ name, usernames, items }) {
   const admin = { username: 'alice' }
 
