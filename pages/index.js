@@ -20,7 +20,6 @@ const Home = () => {
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body w-[360px] h-[120px]" />
         </div>
-
       </Layout>
     )
   }
@@ -29,7 +28,8 @@ const Home = () => {
     return (
       <Layout>
         <div className="card bg-base-100 shadow-xl">
-          <div className="card-body w-[340px] h-[120px]">
+          <div className="card-body w-[340px] h-[175px]">
+            <div className="pb-3">Build snake drafts for anything</div>
             <Link href="/login">
               <a className="btn btn-outline">Login</a>
             </Link>
