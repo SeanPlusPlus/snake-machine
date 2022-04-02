@@ -135,10 +135,29 @@ export default async function create(req, res) {
   }
 
   const league = req.body
+
+  //
+  // draft order
+  //
   const { members } = league
+  
+  if (!Array.isArray(members)) {
+    res.status(400).json({
+      message: 'Members list can not be empty'
+    })
+    return
+  }
+
+  if (members.length === 0) {
+    res.status(400).json({
+      message: 'No members found to draft'
+    })
+    return
+  }
 
   const userLookups = members.map((m) => (findUser({username: m})))
   const draft_order = []
+
   try {
     for (const lookup of userLookups) {
       const result = await lookup
@@ -147,6 +166,25 @@ export default async function create(req, res) {
   } catch (e) {
     res.status(400).json({
       message: 'One or more of your member usernames does not exist'
+    })
+    return
+  }
+
+  //
+  // items
+  //
+  const { items } = league
+
+  if (!Array.isArray(items)) {
+    res.status(400).json({
+      message: 'Items list can not be empty'
+    })
+    return
+  }
+
+  if (items.length === 0) {
+    res.status(400).json({
+      message: 'No items found to draft'
     })
     return
   }

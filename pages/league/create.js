@@ -21,6 +21,7 @@ const LeagueCreate = () => {
   }
   
   const handleLeagueName = (e) => {
+    setWarning(false)
     setValues((values) => ({
       ...values,
       league_name: e.target.value,
@@ -36,6 +37,7 @@ const LeagueCreate = () => {
   }
 
   const handleItems = (e) => {
+    setWarning(false)
     setValues((values) => ({
       ...values,
       items: e.target.value,
@@ -51,12 +53,13 @@ const LeagueCreate = () => {
   }
   
   const handleSubmit = async (e) => {
+    setWarning(false)
     e.preventDefault()
     const { league_name, members, items } = values
     setLeague({
       name: league_name,
-      members: members.split('\n'),
-      items: items.split('\n'),
+      members: members ? members.split('\n') : null,
+      items: items ? items.split('\n') : null,
     })
     setModal('modal-open')
   }
@@ -145,7 +148,7 @@ const LeagueCreate = () => {
               ))}
             </ul>
 
-            {!rand && (
+            {!rand && league.members && (
               <div
                 className="mt-1 link text-sky-500 hover:cursor-pointer hover:text-sky-600 flex text-md"
                 onClick={randomize}
