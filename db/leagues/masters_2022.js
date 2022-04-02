@@ -194,7 +194,7 @@ const items = [
 ]
 
 createLeague({name, usernames, items}).then((data) => {
-  console.log(data);
+  console.log(data.league.ref.id);
 
   const drafts = names.map((username) => ({ username: username, name: name }))
 

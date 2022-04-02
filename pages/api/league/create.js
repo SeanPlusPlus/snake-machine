@@ -216,12 +216,8 @@ export default async function create(req, res) {
 
   createLeague({name, usernames, items, admin}).then((data) => {
     res.status(200).json({
-      data,
-      usernames,
-      admin,
-      draft_users,
-      username,
-      league,
+      id: data.league.ref.id,
+      ...data.league.data,
     })
     return
   })
