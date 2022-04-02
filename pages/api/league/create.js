@@ -10,6 +10,7 @@ const FAUNA_SECRET = process.env.FAUNA_SECRET
 const q = faunadb.query
 const {
   Collection,
+  Create,
   Ref,
   Get,
   Paginate,
@@ -77,6 +78,35 @@ async function findUser({ username }) {
   return user
 }
 
+async function createLeague({ name, usernames, items, admin }) {
+  const current_pick = {
+    draft_order_idx: 0,
+    direction: 'Right',
+  }
+
+  const league = {
+    name,
+    draft_order: usernames,
+    picks: {},
+    items: items.map((name) => ({ name })),
+    admin,
+    current_pick,
+    status: 'open'
+  }
+
+  const collection = 'leagues'
+  const new_league = await client.query(
+    Create(
+      Collection(collection),
+      { data: league }
+    )
+  )
+
+  return {
+    league: new_league
+  }
+}
+
 export default async function create(req, res) {
   const session = await getLoginSession(req)
   if (!session) {
@@ -113,6 +143,18 @@ export default async function create(req, res) {
   const league = req.body
 
   //
+  // name
+  //
+  const { name } = league
+ 
+  if (!name) {
+    res.status(400).json({
+      message: 'League name required'
+    })
+    return
+  }
+
+  //
   // draft order
   //
   const { members } = league
@@ -132,12 +174,12 @@ export default async function create(req, res) {
   }
 
   const userLookups = members.map((m) => (findUser({username: m})))
-  const draft_order = []
+  const draft_users = []
 
   try {
     for (const lookup of userLookups) {
       const result = await lookup
-      draft_order.push(result)
+      draft_users.push(result)
     }
   } catch (e) {
     res.status(400).json({
@@ -165,10 +207,22 @@ export default async function create(req, res) {
     return
   }
 
-  res.status(200).json({
-    draft_order,
-    username,
-    league,
+  //
+  // create league
+  //
+  //
+  const usernames = members.map((name) => ({ username: name }))
+  const admin = { username }
+
+  createLeague({name, usernames, items, admin}).then((data) => {
+    res.status(200).json({
+      data,
+      usernames,
+      admin,
+      draft_users,
+      username,
+      league,
+    })
+    return
   })
-  return
 }
