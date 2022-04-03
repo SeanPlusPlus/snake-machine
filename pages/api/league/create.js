@@ -288,7 +288,6 @@ export default async function create(req, res) {
 
     res.status(200).json({
       id: data.league.ref.id,
-      ...data.league.data,
     })
     return
   })

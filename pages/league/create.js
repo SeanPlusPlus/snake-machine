@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import _shuffle from 'lodash/shuffle'
 import Layout from "../../components/layout"
 import Fetching from '../../components/fetching'
@@ -15,6 +16,8 @@ const LeagueCreate = () => {
     members: '',
     items: '',
   })
+
+  const router = useRouter()
 
   const handleCancel = () => {
     setModal('')
@@ -81,7 +84,8 @@ const LeagueCreate = () => {
       setModal('')
       return
     } else { // success
-      console.log('*', json);
+      const { id } = json
+      router.push(`/leagues/${id}`)
     }
   }
 
