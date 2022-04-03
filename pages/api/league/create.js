@@ -107,6 +107,66 @@ async function createLeague({ name, usernames, items, admin }) {
   }
 }
 
+async function findLeague(name) {
+  const index = 'leagues_by_name'
+  const item = await client.query(
+    Select([0],
+      Paginate(
+        Match(
+          Index(index),
+          name
+        )
+      )
+    )
+  )
+  const ref = item[1].value.id
+  const collection = 'leagues'
+  const league = await client.query(
+    Get(
+      Ref(
+        Collection(collection),
+        ref
+      )
+    )
+  )
+
+  return league
+}
+
+async function createDraft({ name, username }) {
+  let user = null
+
+  // check for username
+  try {
+    user = await findUser({ username })
+  } catch {
+    user = false
+  }
+
+  if (user === false) {
+    return false
+  }
+
+  const league = await findLeague(name)
+
+  const collection = 'drafts'
+  const new_draft = await client.query(
+    Create(
+      Collection(collection),
+      {
+        data: {
+          userRef: user.ref,
+          leagueRef: league.ref,
+        }
+      }
+    )
+  )
+
+  return {
+    new_draft,
+  }
+}
+
 export default async function create(req, res) {
   const session = await getLoginSession(req)
   if (!session) {
@@ -214,7 +274,18 @@ export default async function create(req, res) {
   const usernames = members.map((name) => ({ username: name }))
   const admin = { username }
 
-  createLeague({name, usernames, items, admin}).then((data) => {
+  createLeague({name, usernames, items, admin}).then(async (data) => {
+
+    const draftPromises = members.map((username) => (
+      createDraft({ username: username, name: name })
+    ))
+
+    const drafts = []
+    for (const draft of draftPromises) {
+      const result = await draft
+      drafts.push(result)
+    }
+
     res.status(200).json({
       id: data.league.ref.id,
       ...data.league.data,
