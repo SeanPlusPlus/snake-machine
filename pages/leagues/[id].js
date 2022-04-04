@@ -184,9 +184,9 @@ const League = () => {
                         className={`pt-1 list-none ${myPick(league.draft_order, league.current_pick, username) && !item.drafted && 'hover:bg-sky-700 lg:hover:rounded-md'}`}
                       >
                         <label
-                          className={`label h-[40px] ${myPick(league.draft_order, league.current_pick, username) && !item.drafted && 'cursor-pointer'}`}
+                          className={`label h-[30px] pt-1 pb-2 ${myPick(league.draft_order, league.current_pick, username) && !item.drafted && 'cursor-pointer'}`}
                         >
-                          <span className={`label-text ${item.drafted && 'line-through'}`}>
+                          <span className={`text-sm ${item.drafted && 'line-through'}`}>
                             {item.name}
                           </span> 
                           {!item.drafted && myPick(league.draft_order, league.current_pick, username) && (
