@@ -75,6 +75,13 @@ const League = () => {
           setLeague(data.league)
           setOpponents({picks: data.league.picks})
         }
+
+        const actual_status = data.league.status
+        const local_status = league.status
+        if (actual_status !== local_status) {
+          setLeague(data.league)
+          setOpponents({picks: data.league.picks})
+        }
       })
     }
   }, 1000 * 3);
@@ -145,7 +152,7 @@ const League = () => {
               <div>
                 {league.name}
               </div>
-              {myPick(league.draft_order, league.current_pick, username) && (
+              {myPick(league.draft_order, league.current_pick, username) && (!league.status === 'closed') && (
                 <div className="badge badge-warning badge-lg gap-2 mt-2 ml-auto">
                   Your Pick
                 </div>
