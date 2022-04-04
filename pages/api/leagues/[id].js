@@ -146,6 +146,30 @@ export default async function league(req, res) {
     return
   }
 
+  const closed = req.body
+  if (closed) {
+    if (league.admin.username === username) {
+      const league_data = {
+        ...league,
+        status: 'closed',
+      }
+      const updated_league = await client.query(
+        Update(
+          Ref(Collection('leagues'), league.id),
+          { data: league_data },
+        )
+      )
+      res.status(200).json({
+        username,
+        league: {
+          ...league,
+          status: 'closed',
+        },
+      })
+      return
+    }
+  }
+
   const selected = req.body
   if (!selected) {
     res.status(400).json({

@@ -109,6 +109,18 @@ const League = () => {
     setAdminModal('')
   }
 
+  const handleCloseDraft = async () => {
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ closed: true })
+    }
+    const res = await fetch(`/api/leagues/${id}`, options)
+    const json = await res.json()
+    setLeague(json.league)
+    setAdminModal('')
+  }
+
   if (warning) {
     return (
       <Layout>
@@ -161,7 +173,7 @@ const League = () => {
               <div>
                 {league.name}
               </div>
-              {league.admin.username === username && (
+              {league.admin.username === username && (!league.status === 'closed') && (
                 <div>
                   <svg onClick={handleAdminModal} xmlns="http://www.w3.org/2000/svg" className="mt-2 ml-2 h-6 w-6 hover:text-sky-500 hover:cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -280,6 +292,9 @@ const League = () => {
                     Admin
                   </span>
                 </h3>
+                <p className="text-left">
+                  <button onClick={handleCloseDraft} className="mt-8 btn btn-warning link-outline">Close Draft</button>
+                </p>
                 <div className="modal-action pt-5">
                   <label htmlFor="my-modal" className="btn" onClick={handleAdminModalCancel}>Cancel</label>
                 </div>
