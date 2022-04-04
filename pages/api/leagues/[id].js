@@ -147,7 +147,7 @@ export default async function league(req, res) {
   }
 
   const closed = req.body
-  if (closed) {
+  if (closed.closed) {
     if (league.admin.username === username) {
       const league_data = {
         ...league,
@@ -163,7 +163,7 @@ export default async function league(req, res) {
         username,
         league: {
           ...league,
-          status: 'closed',
+          status: updated_league.data.status,
         },
       })
       return
